@@ -31,6 +31,8 @@
 
 - name: "Install GitLab repository"
   command: bash /tmp/gitlab_install_repository.sh
+  args:
+    creates: /usr/bin/gitlab-ctl
   become: True
   when: not gitlab_file.stat.exists
 
@@ -66,6 +68,7 @@
   shell: nohup /opt/gitlab/embedded/bin/runsvdir-start </dev/null >/dev/null 2>&1 &
   args:
     executable: "/bin/bash"
+    creates: /usr/bin/gitlab-ctl
   when:
     - not gitlab_file.stat.exists
     - molecule_test
@@ -114,6 +117,8 @@
 
 - name: "Seed the MySQL DB"
   command: bash -c "echo 'yes' | gitlab-rake -s gitlab:setup"
+  args:
+    creates: /usr/bin/gitlab-ctl
   become: True
   when: (gitlab_mysql.enabled) and (gitlab.edition == "ee")
   changed_when: False
