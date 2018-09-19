@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: "Install Gitlab"
+  role_name: "gitlab"
   author: "Lean Delivery team <team@lean-delivery.com>"
   description: "Lean Delivery gitlab installation"
   company: "Epam Systems"
