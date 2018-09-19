@@ -8,6 +8,6 @@
   hosts: gitlab
   become: True
   roles:
-    - role: gitlab
+    - role: lean_delivery.gitlab
   vars:
     molecule_test: True
