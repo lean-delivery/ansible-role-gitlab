@@ -8,6 +8,6 @@
   hosts: gitlab
   become: True
   roles:
-    - role: lean_delivery.gitlab
+    - role: ansible-role-gitlab
   vars:
     molecule_test: True

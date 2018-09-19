@@ -9,6 +9,6 @@
   become: True
   become_method: sudo
   roles:
-    - role: lean_delivery.gitlab
+    - role: ansible-role-gitlab
   vars:
     molecule_test: True
