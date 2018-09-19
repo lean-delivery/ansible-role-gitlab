@@ -1,0 +1,13 @@
+---
+gitlab_repository_installation_script_url: "https://packages.gitlab.com/install/\
+                                repositories/gitlab/gitlab-{{ gitlab.edition }}/script.rpm.sh"
+requirements:
+  - openssh-server
+  - postfix
+  - curl
+  - python2-pip
+  - openssl
+  - openssl-libs
+  - policycoreutils
+  - policycoreutils-python
+  - libselinux-utils

@@ -1,0 +1,72 @@
+# The URL through which GitLab will be accessed.
+external_url "{{ gitlab.external_url }}"
+
+# gitlab.yml configuration
+gitlab_rails['time_zone'] = "{{ gitlab_config.time_zone }}"
+gitlab_rails['backup_keep_time'] = {{ gitlab_config.backup_keep_time }}
+gitlab_rails['gitlab_email_enabled'] = {{ gitlab_email.enabled|lower }}
+{% if gitlab_email.enabled %}
+gitlab_rails['gitlab_email_from'] = "{{ gitlab_email.from }}"
+gitlab_rails['gitlab_email_display_name'] = "{{ gitlab_email.display_name }}"
+gitlab_rails['gitlab_email_reply_to'] = "{{ gitlab_email.reply_to }}"
+{% endif %}
+
+# SMTP server settings, you can find examples here: https://docs.gitlab.com/omnibus/settings/smtp.html, all defaults are in configuration file defaults/main.yml
+gitlab_rails['gitlab_smtp_enable'] = {{ gitlab_smtp.enabled|lower | default(false) }}
+{% if gitlab_smtp.enabled %}
+gitlab_rails['smtp_address'] = "{{ gitlab_smtp.address }}"
+gitlab_rails['smtp_port'] = {{ gitlab_smtp.port }}
+gitlab_rails['smtp_user_name'] = "{{ gitlab_smtp.user_name }}"
+gitlab_rails['smtp_password'] = "{{ gitlab_smtp.password }}"
+gitlab_rails['smtp_domain'] = "{{ gitlab_smtp.domain }}"
+gitlab_rails['smtp_authentication'] = "{{ gitlab_smtp.authentication }}"
+gitlab_rails['smtp_enable_starttls_auto'] = {{ gitlab_smtp.enable_starttls_auto | default(true) }}
+gitlab_rails['smtp_openssl_verify_mode'] = "{{ gitlab_smtp.openssl_verify_mode | default('peer') }}" # 'none', 'peer', 'client_once', 'fail_if_no_peer_cert'
+gitlab_rails['smtp_tls'] = "{{ gitlab_smtp.tls | default(false) }}
+{% endif %}
+
+# Whether to redirect http to https.
+nginx['redirect_http_to_https'] = {{ gitlab_ssl.redirect_http_to_https|lower }}
+nginx['ssl_certificate'] = "{{ gitlab_ssl.certificate_path }}"
+nginx['ssl_certificate_key'] = "{{ gitlab_ssl.certificate_key_path }}"
+
+# The directory where Git repositories will be stored.
+git_data_dirs({"default" => {"path" => "{{ gitlab.git_data_dir }}"}})
+
+# These settings are documented in more detail at
+gitlab_rails['ldap_enabled'] = {{ gitlab_ldap.enabled|lower }}
+gitlab_rails['ldap_host'] = '{{ gitlab_ldap.host }}'
+gitlab_rails['ldap_port'] = {{ gitlab_ldap.port }}
+gitlab_rails['ldap_uid'] = '{{ gitlab_ldap.uid }}'
+gitlab_rails['ldap_method'] = '{{ gitlab_ldap.method}}' # 'ssl' or 'plain'
+gitlab_rails['ldap_bind_dn'] = '{{ gitlab_ldap.bind_dn }}'
+gitlab_rails['ldap_password'] = '{{ gitlab_ldap.password }}'
+gitlab_rails['ldap_allow_username_or_email_login'] = true
+gitlab_rails['ldap_base'] = '{{ gitlab_ldap.base }}'
+
+# GitLab Nginx
+{% if gitlab_nginx.listen_port is defined %}
+nginx['listen_port'] = "{{ gitlab_nginx.listen_port }}"
+{% endif %}
+{% if gitlab_nginx.listen_https is defined %}
+nginx['listen_https'] = "{{ gitlab_nginx.listen_https }}"
+{% endif %}
+
+# MySQL DB settings
+{%if gitlab_mysql.enabled and gitlab_edition == "ee" %}
+# Disable the built-in Postgres
+postgresql['enable'] = false
+# Fill in the values for database.yml
+gitlab_rails['db_adapter'] = '{{ gitlab_mysql.db_adapter }}'
+gitlab_rails['db_encoding'] = '{{ gitlab_mysql.db_encoding }}'
+gitlab_rails['db_host'] = '{{ gitlab_mysql.db_host }}'
+gitlab_rails['db_port'] = {{ gitlab_mysql.db_port }}
+gitlab_rails['db_database'] = "gitlabhq_production"
+gitlab_rails['db_username'] = '{{ gitlab_mysql.db_username }}'
+gitlab_rails['db_password'] = '{{ gitlab_mysql.db_password }}'
+gitlab_rails['auto_migrate'] = false
+gitlab_rails['db_socket'] = '/var/lib/mysql/mysql.sock'
+{% endif %}
+
+#Webhook timeout
+gitlab_rails['webhook_timeout'] = 100

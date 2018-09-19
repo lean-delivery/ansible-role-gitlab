@@ -1,0 +1,124 @@
+---
+- name: "Choose platform based task"
+  include_tasks: "{{ platform }}"
+  with_first_found:
+    - "system/{{ ansible_os_family }}.yml"
+    - "system/not-supported.yml"
+  loop_control:
+    loop_var: platform
+
+- name: "Check if GitLab is already installed."
+  stat: path=/usr/bin/gitlab-ctl
+  register: gitlab_file
+
+- name: "Check if GitLab is already bootstrapped."
+  stat: path=/var/opt/gitlab/bootstrapped
+  register: gitlab_bootstrapped
+
+- name: "Install pyapi-gitlab (for external management from Ansible)"
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - pyapi-gitlab
+    - python-gitlab
+  become: True
+
+- name: "Download GitLab repository installation script."
+  get_url:
+    url: "{{ gitlab_repository_installation_script_url }}"
+    dest: /tmp/gitlab_install_repository.sh
+  when: not gitlab_file.stat.exists
+
+- name: "Install GitLab repository"
+  command: bash /tmp/gitlab_install_repository.sh
+  become: True
+  when: not gitlab_file.stat.exists
+
+- name: "Verifying GitLab version is set"
+  debug:
+    msg: "gitlab-{{ gitlab.edition }}\
+    {% if gitlab.version != 'latest' %}-{{ gitlab.version }}{% endif %}"
+  when: (gitlab_file.stat.exists == False)
+  failed_when: gitlab.version | replace(' ', '') == ""
+
+- name: "Install GitLab"
+  package:
+    name: "gitlab-{{ gitlab.edition }}\
+    {% if gitlab.version != 'latest' %}-{{ gitlab.version }}{% endif %}"
+    state: present
+  become: True
+  when: not gitlab_file.stat.exists
+
+- name: "Create default user"
+  template:
+    src: 001_admin.rb.j2
+    dest: /opt/gitlab/embedded/service/gitlab-rails/db/fixtures/production/001_admin.rb
+    owner: root
+    group: root
+    mode: 0644
+  become: True
+  when:
+    - not gitlab_bootstrapped.stat.exists
+    - gitlab_admin.username is defined
+    - gitlab_admin.password is defined
+
+- name: "Task on CI issue"
+  shell: nohup /opt/gitlab/embedded/bin/runsvdir-start </dev/null >/dev/null 2>&1 &
+  args:
+    executable: "/bin/bash"
+  when:
+    - not gitlab_file.stat.exists
+    - molecule_test
+
+# Start and configure GitLab. Sometimes the first run fails, but after that,
+# restarts fix problems, so ignore failures on this run.
+- name: "Reconfigure GitLab (first run)."
+  command: >
+    gitlab-ctl reconfigure
+    creates=/var/opt/gitlab/bootstrapped
+  failed_when: False
+  become: True
+
+- name: "Create GitLab SSL configuration folder."
+  file:
+    path: /etc/gitlab/ssl
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  become: True
+  when: gitlab_ssl.create_self_signed_cert
+
+- name: "Create self-signed certificate."
+  command: >
+    openssl req -new -nodes -x509 -subj "{{ gitlab_ssl.self_signed_cert_subj }}" -days 3650
+     -keyout {{ gitlab_ssl.certificate_key_path }}
+     -out {{ gitlab_ssl.certificate_path }} -extensions v3_ca
+     creates={{ gitlab_ssl.certificate_path }}
+  become: True
+  when: gitlab_ssl.create_self_signed_cert
+
+- name: "Copy GitLab configuration file."
+  template:
+    src: gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+    owner: root
+    group: root
+    mode: 0600
+    backup: True
+  become: True
+  notify: Reconfigure gitlab
+
+- name: "Run all handlers"
+  meta: flush_handlers
+
+- name: "Seed the MySQL DB"
+  command: bash -c "echo 'yes' | gitlab-rake -s gitlab:setup"
+  become: True
+  when: (gitlab_mysql.enabled) and (gitlab.edition == "ee")
+  changed_when: False
+
+# SElinux for gitlab
+- name: "Detecting selinux"
+  include: selinux-gitlab.yml
+  when: ansible_selinux.status == "enabled" and ansible_selinux.mode != "disabled"

@@ -1,0 +1,45 @@
+user_args ={
+  email: "{{ gitlab_admin.email }}",
+  name: "{{ gitlab_admin.name }}",
+  username: "{{ gitlab_admin.username }}",
+  password: "{{ gitlab_admin.password }}",
+  admin: true
+}
+
+token_args = {
+  personal_access_token: "{{ gitlab_admin.token }}",
+  scopes: ["api"],
+  name: "API token"
+}
+
+user = User.new(user_args)
+user.skip_confirmation!
+
+
+if user.save
+  puts "Administrator account created:".color(:green)
+  puts
+  puts "login:    {{ gitlab_admin.username }}".color(:green)
+  puts "password: ********".color(:green)
+  class AddToken < ActiveRecord::Migration
+  include Gitlab::Database::MigrationHelpers
+  disable_ddl_transaction!
+  DOWNTIME = false
+  
+	if Gitlab::Database.postgresql?
+	  execute <<~SQL
+		INSERT INTO personal_access_tokens (token, name, scopes, created_at, updated_at, user_id)
+		(SELECT '{{ gitlab_admin.token }}', 'PersonalToken', '---\n- api\n', '#{Time.now}', '#{Time.now}', id from users where username = '{{ gitlab_admin.username }}')
+	  SQL
+	end 
+		
+	end
+else
+  puts "Could not create the default administrator account:".color(:red)
+  puts
+  user.errors.full_messages.map do |message|
+    puts "--> #{message}".color(:red)
+  end
+  puts
+  exit 1
+end

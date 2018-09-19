@@ -1,0 +1,13 @@
+---
+- name: "Force gathering facts"
+  hosts: all
+  gather_facts: True
+  roles: []
+
+- name: "Converge"
+  hosts: gitlab
+  become: True
+  roles:
+    - role: gitlab
+  vars:
+    molecule_test: True

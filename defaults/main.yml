@@ -1,0 +1,94 @@
+---
+# GitLab default user / override it on your playbook
+gitlab_admin:
+  email: superdamin@example.com
+  name: Administrator
+  username: superdamin
+  password: Qwe54321
+  token: BF1U1swzaouACMj2S9aQ
+
+# General config.
+gitlab:
+  external_url: "https://{{ ansible_fqdn }}"
+  git_data_dir: "/var/opt/gitlab/git-data"
+  edition: "ce"
+  version: "latest"
+
+# SSL Configuration.
+gitlab_ssl:
+  redirect_http_to_https: True
+  certificate_path: "/etc/gitlab/ssl/gitlab.crt"
+  certificate_key_path: "/etc/gitlab/ssl/gitlab.key"
+  create_self_signed_cert: True
+  self_signed_cert_subj: "/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ ansible_fqdn }}"
+
+# LDAP Configuration
+gitlab_ldap:
+  enabled: False
+  host: "example.com"
+  port: "389"
+  uid: "sAMAccountName"
+  method: "plain"
+  bind_dn: "CN=Username,CN=Users,DC=example,DC=com"
+  password: "password"
+  base: "DC=example,DC=com"
+
+# Probably best to leave this as the default, unless doing testing.
+gitlab_restart_handler_failed_when: 'gitlab_restart.rc != 0'
+
+# Optional settings.
+gitlab_config:
+  time_zone: "UTC"
+  backup_keep_time: "604800"
+
+# Email configuration.
+gitlab_email:
+  enabled: False
+  from: "gitlab@example.com"
+  display_name: "Gitlab"
+  reply_to: "gitlab@example.com"
+
+# MySQL DB info !!!(only for gitlab-ee)!!!
+gitlab_mysql:
+  enabled: False
+  db_adapter: "mysql2"
+  db_encoding: "utf8"
+  db_host: "localhost"
+  db_port: "3306"
+  db_username: "USERNAME"
+  db_password: "PASSWORD"
+
+
+# Default configuration for SMTP section
+# (if enabled, look at gitlab_smtp_enable key),
+# default settings for the most popular SMTP servers
+# listed in https://docs.gitlab.com/omnibus/settings/smtp.html
+# at least one SMTP set must be enabled to avoid failure
+# (doesn't matter: gitlab_smtp_enable key in true or false state)
+
+# Default SMTP configuration for GMAIL
+# Don't forget to change my.email@gmail.com
+# to your email address and my-gmail-password to your own password.
+# If you encounter authentication errors, ensure you have allowed
+# less secure apps to access the account or try turning
+# on 2-step validation and using an application password.
+gitlab_smtp:
+  enabled: False
+  address: "smtp.gmail.com"
+  port: "587"
+  user_name: "my.email@gmail.com"
+  password: "my-gmail-password"
+  domain: "smtp.gmail.com"
+  authentication: "login"
+  enable_starttls_auto: "true"
+  tls: "false"
+# Can be: "none", "peer", "client_once", "fail_if_no_peer_cert",
+# see http://api.rubyonrails.org/classes/ActionMailer/Base.html
+  openssl_verify_mode: "peer"
+
+# Gitlab nginx config. Uncomment and set variables
+gitlab_nginx: []
+#  listen_port:
+#  listen_https:
+
+molecule_test: False
