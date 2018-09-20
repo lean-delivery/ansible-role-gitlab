@@ -9,3 +9,4 @@ requirements:
   - ca-certificates
   - git
   - policycoreutils
+  - tzdata
