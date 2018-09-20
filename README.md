@@ -75,7 +75,7 @@ Requirements
        default: `DC=example,DC=com`
   - `gitlab_config` - gitlab configuration
     - `time_zone` - time zone
-       default: `UTC`
+       default: `America/New_York`
     - `backup_keep_time` - backup retention time
        default: `604800`
   - `gitlab_email` - mail configuration
