@@ -21,7 +21,7 @@ install:
 
 script:
   - ansible-lint -c .ansible-lint `find . -regex ".*\.\(yml\)"`
-  - travis_wait 20 molecule test
+  - travis_wait 40 molecule test
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
