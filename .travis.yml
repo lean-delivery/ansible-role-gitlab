@@ -25,6 +25,3 @@ script:
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
-
-after_failure:
-  find *Rcheck -name '*.fail' -print -exec cat '{}' \;
