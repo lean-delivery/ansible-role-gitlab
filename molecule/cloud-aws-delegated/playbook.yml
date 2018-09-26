@@ -1,13 +1,11 @@
 ---
-- name: "Force gathering facts"
+- name: Force gathering facts
   hosts: all
   gather_facts: True
   roles: []
 
-- name: "Converge"
-  hosts: gitlab
-  become: True
-  become_method: sudo
+- name: Converge
+  hosts: all
   roles:
     - role: ansible-role-gitlab
   vars:
