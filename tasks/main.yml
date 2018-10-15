@@ -18,7 +18,7 @@
 - name: "Install pyapi-gitlab (for external management from Ansible)"
   pip:
     name: "{{ item }}"
-  with_items:
+  loop:
     - pyapi-gitlab
     - python-gitlab
   become: True

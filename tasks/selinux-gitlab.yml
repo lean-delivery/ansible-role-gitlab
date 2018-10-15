@@ -3,7 +3,7 @@
   package:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - libselinux-python
     - policycoreutils-python
   become: True
