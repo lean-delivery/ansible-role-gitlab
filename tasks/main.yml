@@ -90,7 +90,7 @@
     group: root
     mode: 0700
   become: True
-  when: gitlab_ssl.create_self_signed_cert
+  when: gitlab_ssl_create_self_signed_cert
 
 - name: "Create self-signed certificate."
   command: >
