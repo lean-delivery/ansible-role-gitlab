@@ -7,12 +7,12 @@ Gitlab installation
 This role:
   - Installs Gitlab on Ununtu and Centos7
   - Configures Gitlab
-  
+
 Role tasks
 ------------
   - Install Gitlab
   - Configure Gitlab
-  
+
 Requirements
 ------------
 
@@ -22,111 +22,110 @@ Requirements
    - CentOS
      - 7
    - Ubuntu
-   
+
 ## Role Variables
---------------	
-  - `gitlab` - configuration for gitlab
-    - `external_url` - Gitlab external url
-       default: `https://{{ ansible_fqdn }}`
-    - `git_data_dir` - Gitlab custom directory with data
-       default: `/var/opt/gitlab/git-data`
-    - `edition` - Gitlab edition. ee or ce
-       default: `ce`
-    - `version` - Gitlab version
-       default: `latest`
-  - `gitlab_admin` - gitlab super admin user parameters. User will be created during installation.
-    - `email` - admin email address
-       default: `superdamin@example.com`
-    - `name` - admin name
-       default: `Administrator`
-    - `username` - admin username
-       default: `superdamin`
-    - `password` - admin password
-       default: `Qwe54321`
-    - `token` - admin api token
-       default: `BF1U1swzaouACMj2S9aQ`
-  - `gitlab_ssl` - gitlab ssl parameters
-    - `redirect_http_to_https` - enable https redirection
+--------------
+  - `gitlab_external_url` - Gitlab external url
+     default: `https://{{ ansible_fqdn }}`
+  - `gitlab_data_dir` - Gitlab custom directory with data
+     default: `/var/opt/gitlab/git-data`
+  - `gitlab_edition` - Gitlab edition. ee or ce
+     default: `ce`
+  - `gitlab_version` - Gitlab version
+     default: `latest`
+# gitlab super admin user parameters. User will be created during installation.
+  - `gitlab_admin_email` - admin email address
+     default: `superdamin@example.com`
+  - `gitlab_admin_name` - admin name
+     default: `Administrator`
+  - `gitlab_admin_username` - admin username
+     default: `superdamin`
+  - `gitlab_admin_password` - admin password
+     default: `Qwe54321`
+  - `gitlab_admin_token` - admin api token
+     default: `BF1U1swzaouACMj2S9aQ`
+# gitlab ssl parameters
+    - `gitlab_ssl_redirect_http_to_https` - enable https redirection
        default: `True`
-    - `certificate_path` - path to public cert
+    - `gitlab_ssl_certificate_path` - path to public cert
        default: `/etc/gitlab/ssl/gitlab.crt`
-    - `certificate_key_path` - path to private cert
+    - `gitlab_ssl_certificate_key_path` - path to private cert
        default: `/etc/gitlab/ssl/gitlab.key`
-    - `create_self_signed_cert` - to create self signed cert
+    - `gitlab_ssl_create_self_signed_cert` - to create self signed cert
        default: `True`
-    - `self_signed_cert_subj` - self signed cert subj
+    - `gitlab_ssl_self_signed_cert_subj` - self signed cert subj
        default: `/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ ansible_fqdn }}`
-  - `gitlab_ldap` - ldap configuration for gitlab
-    - `enabled` - enable ldap usage
+# ldap configuration for gitlab
+    - `gitlab_ldap_enabled` - enable ldap usage
        default: `False`
-    - `host` - ldap server name
+    - `gitlab_ldap_host` - ldap server name
        default: `example.com`
-    - `port` - ldap server port
+    - `gitlab_ldap_port` - ldap server port
        default: `389`
-    - `uid` - 
+    - `gitlab_ldap_uid` -
        default: `sAMAccountName`
-    - `method` - 
+    - `gitlab_ldap_method` -
        default: `plain`
-    - `bind_dn` - 
+    - `gitlab_ldap_bind_dn` -
        default: `CN=Username,CN=Users,DC=example,DC=com`
-    - `password` - 
+    - `gitlab_ldap_password` -
        default: `password`
-    - `base` - 
+    - `gitlab_ldap_base` -
        default: `DC=example,DC=com`
-  - `gitlab_config` - gitlab configuration
-    - `time_zone` - time zone
+# gitlab configuration
+    - `gitlab_config_time_zone` - time zone
        default: `America/New_York`
-    - `backup_keep_time` - backup retention time
+    - `gitlab_config_backup_keep_time` - backup retention time
        default: `604800`
-  - `gitlab_email` - mail configuration
-    - `enabled` - enable mail send configuration
+# mail configuration
+    - `gitlab_email_enabled` - enable mail send configuration
        default: `False`
-    - `from` - from address
+    - `gitlab_email_from` - from address
        default: `gitlab@example.com`
-    - `display_name` - from display 
+    - `gitlab_email_display_name` - from display
        default: `Gitlab`
-    - `reply_to` - reply to address
+    - `gitlab_email_reply_to` - reply to address
        default: `gitlab@example.com`
-  - `gitlab_mysql` - mysql usage. For EE only!
-    - `enabled` - mysql usage enable
+# mysql usage. For EE only!
+    - `gitlab_mysql_enabled` - mysql usage enable
        default: `False`
-    - `db_adapter` - db adapter
+    - `gitlab_mysql_db_adapter` - db adapter
        default: `mysql2`
-    - `db_encoding` - db encoding
+    - `gitlab_mysql_db_encoding` - db encoding
        default: `utf8`
-    - `db_host` - db server name
+    - `gitlab_mysql_db_host` - db server name
        default: `localhost`
-    - `db_port` - d server port
+    - `gitlab_mysql_db_port` - d server port
        default: `3306`
-    - `db_username` - user name
+    - `gitlab_mysql_db_username` - user name
        default: `USERNAME`
-    - `db_password` - user password
+    - `gitlab_mysql_db_password` - user password
        default: `PASSWORD`
-  - `gitlab_smtp` - 
-    - `enabled` - 
+# smtp settings
+    - `gitlab_smtp_enabled` - to enable smtp
        default: `False`
-    - `address` - 
+    - `gitlab_smtp_address` -
        default: `smtp.gmail.com`
-    - `port` - 
+    - `gitlab_smtp_port` -
        default: `587`
-    - `user_name` - 
+    - `gitlab_smtp_user_name` -
        default: `my.email@gmail.com`
-    - `password` - 
+    - `gitlab_smtp_password` -
        default: `my-gmail-password`
-    - `domain` - 
+    - `gitlab_smtp_domain` -
        default: `smtp.gmail.com`
-    - `authentication` - 
+    - `gitlab_smtp_authentication` -
        default: `login`
-    - `enable_starttls_auto` - 
+    - `gitlab_smtp_enable_starttls_auto` -
        default: `true`
-    - `tls` - 
+    - `gitlab_smtp_tls` -
        default: `false`
-    - `openssl_verify_mode` - 
+    - `gitlab_smtp_openssl_verify_mode` -
        default: `peer`
-  - `gitlab_nginx` - 
-    - `listen_port` - 
+# nginx configuration
+    - `gitlab_nginx_listen_port` -
        default: ``
-    - `listen_https` - 
+    - `gitlab_nginx_listen_https` -
        default: ``
 
 Example Inventory
@@ -141,7 +140,7 @@ Example Playbook
 - name: Install and Configure Gitlab
   hosts: gitlab
   roles:
-    - role: lean-delivery.gitlab
+    - role: lean_delivery.gitlab
 ```
 
 License

@@ -38,15 +38,15 @@
 
 - name: "Verifying GitLab version is set"
   debug:
-    msg: "gitlab-{{ gitlab.edition }}\
-    {% if gitlab.version != 'latest' %}-{{ gitlab.version }}{% endif %}"
+    msg: "gitlab-{{ gitlab_edition }}\
+    {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
   when: (gitlab_file.stat.exists == False)
-  failed_when: gitlab.version | replace(' ', '') == ""
+  failed_when: gitlab_version | replace(' ', '') == ""
 
 - name: "Install GitLab"
   package:
-    name: "gitlab-{{ gitlab.edition }}\
-    {% if gitlab.version != 'latest' %}-{{ gitlab.version }}{% endif %}"
+    name: "gitlab-{{ gitlab_edition }}\
+    {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
     state: present
   become: True
   when: not gitlab_file.stat.exists
@@ -61,8 +61,8 @@
   become: True
   when:
     - not gitlab_bootstrapped.stat.exists
-    - gitlab_admin.username is defined
-    - gitlab_admin.password is defined
+    - gitlab_admin_username is defined
+    - gitlab_admin_password is defined
 
 - name: "Task on CI issue"
   shell: nohup /opt/gitlab/embedded/bin/runsvdir-start </dev/null >/dev/null 2>&1 &
@@ -94,12 +94,12 @@
 
 - name: "Create self-signed certificate."
   command: >
-    openssl req -new -nodes -x509 -subj "{{ gitlab_ssl.self_signed_cert_subj }}" -days 3650
-     -keyout {{ gitlab_ssl.certificate_key_path }}
-     -out {{ gitlab_ssl.certificate_path }} -extensions v3_ca
-     creates={{ gitlab_ssl.certificate_path }}
+    openssl req -new -nodes -x509 -subj "{{ gitlab_ssl_self_signed_cert_subj }}" -days 3650
+     -keyout {{ gitlab_ssl_certificate_key_path }}
+     -out {{ gitlab_ssl_certificate_path }} -extensions v3_ca
+     creates={{ gitlab_ssl_certificate_path }}
   become: True
-  when: gitlab_ssl.create_self_signed_cert
+  when: gitlab_ssl_create_self_signed_cert
 
 - name: "Copy GitLab configuration file."
   template:
@@ -120,7 +120,7 @@
   args:
     removes: /usr/bin/gitlab-ctl
   become: True
-  when: (gitlab_mysql.enabled) and (gitlab.edition == "ee")
+  when: (gitlab_mysql_enabled) and (gitlab_edition == "ee")
   changed_when: False
 
 # SElinux for gitlab
