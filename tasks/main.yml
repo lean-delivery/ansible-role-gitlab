@@ -61,8 +61,8 @@
   become: True
   when:
     - not gitlab_bootstrapped.stat.exists
-    - gitlab_admin_username is defined
-    - gitlab_admin_password is defined
+    - gitlab_admin_username|trim != ""
+    - gitlab_admin_password|trim != ""
 
 - name: "Task on CI issue"
   shell: nohup /opt/gitlab/embedded/bin/runsvdir-start </dev/null >/dev/null 2>&1 &
