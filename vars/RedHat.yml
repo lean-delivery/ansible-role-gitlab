@@ -1,6 +1,6 @@
 ---
 gitlab_repository_installation_script_url: "https://packages.gitlab.com/install/\
-                                repositories/gitlab/gitlab-{{ gitlab.edition }}/script.rpm.sh"
+                                repositories/gitlab/gitlab-{{ gitlab_edition }}/script.rpm.sh"
 requirements:
   - openssh-server
   - postfix
