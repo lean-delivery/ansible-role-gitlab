@@ -11,7 +11,8 @@
 
 - name: "Check if user is already exists"
   set_fact:
-    user_exists: "{{ gitlab_master_username in (user_list_output.json | map(attribute='username') | list) }}"
+    user_exists: "{{ gitlab_master_username in (user_list_output.json |\
+      map(attribute='username') | list) }}"
 
 - name: "Create user"
   uri:
@@ -51,7 +52,8 @@
 
 - name: "List existing tokens"
   uri:
-    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users/{{ gitlab_master_id }}/impersonation_tokens"
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users/\
+      {{ gitlab_master_id }}/impersonation_tokens"
     method: "GET"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
@@ -62,12 +64,14 @@
 
 - name: "Check if token is already exists"
   set_fact:
-    token_exists: "{{ gitlab_master_token_name in (token_list_output.json | map(attribute='name') | list) }}"
+    token_exists: "{{ gitlab_master_token_name in (token_list_output.json |\
+      map(attribute='name') | list) }}"
   when: gitlab_version is version('9.0','>=')
 
 - name: "Set token to user"
   uri:
-    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users/{{ gitlab_master_id }}/impersonation_tokens"
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users/\
+      {{ gitlab_master_id }}/impersonation_tokens"
     method: "POST"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
@@ -106,7 +110,8 @@
 
 - name: "List existing users in group"
   uri:
-    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/{{ gitlab_project_group_id }}/members"
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/\
+      {{ gitlab_project_group_id }}/members"
     method: "GET"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
@@ -116,11 +121,13 @@
 
 - name: "Check if user is already exists in group"
   set_fact:
-    member_exists: "{{ gitlab_master_username in (member_list_output.json | map(attribute='username') | list) }}"
+    member_exists: "{{ gitlab_master_username in (member_list_output.json |\
+      map(attribute='username') | list) }}"
 
 - name: "Add user to group"
   uri:
-    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/{{ gitlab_project_group_id }}/members"
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/\
+      {{ gitlab_project_group_id }}/members"
     method: "POST"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"

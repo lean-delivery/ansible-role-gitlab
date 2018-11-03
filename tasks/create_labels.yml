@@ -1,7 +1,8 @@
 ---
 - name: "List existing labels"
   uri:
-    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/projects/{{ gitlab_project_id }}/labels"
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/projects/\
+      {{ gitlab_project_id }}/labels"
     method: "GET"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
@@ -15,7 +16,8 @@
 
 - name: "Add labels"
   uri:
-    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/projects/{{ gitlab_project_id }}/labels"
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/projects/\
+      {{ gitlab_project_id }}/labels"
     method: "POST"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
