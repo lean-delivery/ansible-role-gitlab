@@ -43,13 +43,11 @@
   when: (gitlab_file.stat.exists == False)
   failed_when: gitlab_version | replace(' ', '') == ""
 
-- name: "Install GitLab"
-  package:
-    name: "gitlab-{{ gitlab_edition }}\
-    {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
-    state: present
-    disable_gpg_check: True
-  become: True
+- include_tasks: "{{ platform }}"
+  with_first_found:
+    - "install/{{ ansible_os_family }}.yml"
+  loop_control:
+    loop_var: platform
   when: not gitlab_file.stat.exists
 
 - name: "Create default user"
