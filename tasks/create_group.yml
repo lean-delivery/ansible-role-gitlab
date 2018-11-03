@@ -20,10 +20,8 @@
     method: "POST"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
-    body:
-      name: "{{ gitlab_project_group }}"
-      path: "{{ gitlab_project_group }}"
-    body_format: form-urlencoded
+    body: "name={{ gitlab_project_group }}&path={{ gitlab_project_group }}"
+    body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
     return_content: True
     status_code: 201

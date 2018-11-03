@@ -21,11 +21,9 @@
     method: "POST"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
-    body:
-      name: "{{ item.value.name }}"
-      color: "{{ item.value.color }}"
-      description: "{{ item.value.description }}"
-    body_format: form-urlencoded
+    body: "name={{ item.value.name }}&color={{ item.value.color }}&\
+      description={{ item.value.description }}"
+    body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
     status_code: 201
   with_dict: "{{ gitlab_labels_list }}"

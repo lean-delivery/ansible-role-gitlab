@@ -20,13 +20,10 @@
     method: "POST"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
-    body:
-      name: "{{ gitlab_master_name }}"
-      username: "{{ gitlab_master_username }}"
-      email: "{{ gitlab_master_email }}"
-      password: "{{ gitlab_master_password }}"
-      skip_confirmation: "true"
-    body_format: form-urlencoded
+    body: "name={{ gitlab_master_name }}&username={{ gitlab_master_username }}&\
+      email={{ gitlab_master_email }}&password={{ gitlab_master_password }}&\
+      skip_confirmation=true"
+    body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
     return_content: True
     status_code: 201
@@ -75,11 +72,9 @@
     method: "POST"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
-    body:
-      user_id: "{{ gitlab_master_id }}"
-      name: "{{ gitlab_master_token_name }}"
-      scopes[]: "api"
-    body_format: form-urlencoded
+    body: "user_id={{ gitlab_master_id }}&name={{ gitlab_master_token_name }}&\
+      scopes[]=api"
+    body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
     return_content: True
     status_code: 201
@@ -131,11 +126,8 @@
     method: "POST"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
-    body:
-      id: "{{ gitlab_project_group_id }}"
-      user_id: "{{ gitlab_master_id }}"
-      access_level: "40"
-    body_format: form-urlencoded
+    body: "user_id={{ gitlab_master_id }}&access_level=40"
+    body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
     return_content: True
     status_code: 201
