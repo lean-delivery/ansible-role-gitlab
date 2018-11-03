@@ -1,0 +1,135 @@
+---
+- name: "List existing users"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users"
+    method: "GET"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+  register: user_list_output
+
+- name: "Check if user is already exists"
+  set_fact:
+    user_exists: "{{ gitlab_master_username in (user_list_output.json | map(attribute='username') | list) }}"
+
+- name: "Create user"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users"
+    method: "POST"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    body:
+      name: "{{ gitlab_master_name }}"
+      username: "{{ gitlab_master_username }}"
+      email: "{{ gitlab_master_email }}"
+      password: "{{ gitlab_master_password }}"
+      skip_confirmation: "true"
+    body_format: form-urlencoded
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+    status_code: 201
+  register: user_output
+  when: not user_exists
+
+- name: "Set user ID"
+  set_fact:
+    gitlab_master_id: "{{ user_output.json.id }}"
+  when: not user_exists
+
+- name: "Get user ID"
+  set_fact:
+    gitlab_master_id: "{{ item.id }}"
+  loop: "{{ user_list_output.json }}"
+  when:
+    - user_exists
+    - item.username == gitlab_master_username
+
+- name: "User debug"
+  debug:
+    msg: "User id is {{ gitlab_master_id }}"
+
+- name: "List existing tokens"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users/{{ gitlab_master_id }}/impersonation_tokens"
+    method: "GET"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+  register: token_list_output
+  when: gitlab_version is version('9.0','>=')
+
+- name: "Check if token is already exists"
+  set_fact:
+    token_exists: "{{ gitlab_master_token_name in (token_list_output.json | map(attribute='name') | list) }}"
+  when: gitlab_version is version('9.0','>=')
+
+- name: "Set token to user"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users/{{ gitlab_master_id }}/impersonation_tokens"
+    method: "POST"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    body:
+      user_id: "{{ gitlab_master_id }}"
+      name: "{{ gitlab_master_token_name }}"
+      scopes[]: "api"
+    body_format: form-urlencoded
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+    status_code: 201
+  register: token_output
+  when:
+    - gitlab_version is version('9.0','>=')
+    - not token_exists
+
+- name: "Set token"
+  set_fact:
+    gitlab_master_token: "{{ token_output.json.token }}"
+  when:
+    - gitlab_version is version('9.0','>=')
+    - not token_exists
+
+# - name: "Get token"
+#   set_fact:
+#     gitlab_master_token: "{{ item.token }}"
+#   loop: "{{ token_list_output.json }}"
+#   when:
+#     - token_exists
+#     - item.name == gitlab_master_token_name
+
+- name: "Token debug"
+  debug:
+    msg: "User token is {{ gitlab_master_token }}"
+  when: gitlab_version is version('9.0','>=')
+
+- name: "List existing users in group"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/{{ gitlab_project_group_id }}/members"
+    method: "GET"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+  register: member_list_output
+
+- name: "Check if user is already exists in group"
+  set_fact:
+    member_exists: "{{ gitlab_master_username in (member_list_output.json | map(attribute='username') | list) }}"
+
+- name: "Add user to group"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/{{ gitlab_project_group_id }}/members"
+    method: "POST"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    body:
+      id: "{{ gitlab_project_group_id }}"
+      user_id: "{{ gitlab_master_id }}"
+      access_level: "40"
+    body_format: form-urlencoded
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+    status_code: 201
+  when: not member_exists
