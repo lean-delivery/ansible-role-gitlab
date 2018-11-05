@@ -9,7 +9,6 @@
   roles:
     - role: ansible-role-gitlab
   vars:
-    gitlab_external_url: "https://localhost"
     molecule_test: True
     gitlab_project_group_create: True
     gitlab_project_create: True
