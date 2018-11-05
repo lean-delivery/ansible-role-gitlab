@@ -12,7 +12,7 @@ lint:
 platforms:
   - name: test-epc-centos7-gitlab
     image: CentOS7_64-bit
-    shape: small
+    shape: large
     region: EPAM-BY2
     wait_timeout: 1800
     groups:

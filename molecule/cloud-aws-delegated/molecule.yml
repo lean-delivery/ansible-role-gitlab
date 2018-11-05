@@ -12,7 +12,7 @@ lint:
 platforms:
   - name: test-aws-centos7-gitlab
     image: CentOS7_64-bit
-    shape: small
+    shape: large
     region: AWS-EUCENTRAL
     wait_timeout: 1800
     groups:
