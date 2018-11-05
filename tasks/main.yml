@@ -1,7 +1,8 @@
 ---
 - name: "Gather AWS facts"
   ec2_metadata_facts:
-  ignore_errors: yes
+  ignore_errors: True
+
 - include_tasks: "install.yml"
   when: gitlab_install
 
