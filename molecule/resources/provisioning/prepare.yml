@@ -21,10 +21,3 @@
       raw: test -e /usr/bin/python || (yum install -y python2 python-simplejson)
       become: True
       changed_when: False
-
-- name: AWS prepare
-  hosts: all
-  tasks:
-    - name: Gather AWS facts
-      ec2_metadata_facts:
-      ignore_errors: yes

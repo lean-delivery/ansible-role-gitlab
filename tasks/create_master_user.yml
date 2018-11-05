@@ -47,6 +47,36 @@
   debug:
     msg: "User id is {{ gitlab_master_id }}"
 
+- name: "List existing users in group"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/\
+      {{ gitlab_project_group_id }}/members"
+    method: "GET"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+  register: member_list_output
+
+- name: "Check if user is already exists in group"
+  set_fact:
+    member_exists: "{{ gitlab_master_username in (member_list_output.json |\
+      map(attribute='username') | list) }}"
+
+- name: "Add user to group"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/\
+      {{ gitlab_project_group_id }}/members"
+    method: "POST"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    body: "user_id={{ gitlab_master_id }}&access_level=40"
+    body_format: raw
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+    status_code: 201
+  when: not member_exists
+
 - name: "List existing tokens"
   uri:
     url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/users/\
@@ -102,33 +132,3 @@
   debug:
     msg: "User token is {{ gitlab_master_token }}"
   when: gitlab_version is version('9.0','>=')
-
-- name: "List existing users in group"
-  uri:
-    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/\
-      {{ gitlab_project_group_id }}/members"
-    method: "GET"
-    headers:
-      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
-    validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
-  register: member_list_output
-
-- name: "Check if user is already exists in group"
-  set_fact:
-    member_exists: "{{ gitlab_master_username in (member_list_output.json |\
-      map(attribute='username') | list) }}"
-
-- name: "Add user to group"
-  uri:
-    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups/\
-      {{ gitlab_project_group_id }}/members"
-    method: "POST"
-    headers:
-      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
-    body: "user_id={{ gitlab_master_id }}&access_level=40"
-    body_format: raw
-    validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
-    status_code: 201
-  when: not member_exists
