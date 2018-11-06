@@ -17,13 +17,13 @@ platforms:
     wait_timeout: 1800
     groups:
       - rhel_family
-  - name: test-aws-ubuntu1804-gitlab
-    image: Ubuntu18.04_64-bit
-    shape: medium
-    region: AWS-EUCENTRAL
-    wait_timeout: 1800
-    groups:
-      - debian_family
+  # - name: test-aws-ubuntu1804-gitlab
+  #   image: Ubuntu18.04_64-bit
+  #   shape: medium
+  #   region: AWS-EUCENTRAL
+  #   wait_timeout: 1800
+  #   groups:
+  #     - debian_family
 provisioner:
   name: ansible
   playbooks:
