@@ -40,16 +40,16 @@ provisioner:
 scenario:
   name: cloud-aws-delegated
   test_sequence:
-  - lint
-  - destroy
+  # - lint
+  # - destroy
   - dependency
-  - syntax
+  # - syntax
   - create
   - prepare
   - converge
-  - idempotence
-  - side_effect
-  - verify
+  # - idempotence
+  # - side_effect
+  # - verify
   # - destroy
 verifier:
   name: testinfra

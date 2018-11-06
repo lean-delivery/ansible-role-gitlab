@@ -38,7 +38,7 @@ AWS gitlab:
   tags:
     - delegated
 
-EPC gitlab:
+.EPC gitlab:
   variables:
     EPC_REGION: EPAM-BY2
   stage: deployment test
