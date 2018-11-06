@@ -22,7 +22,7 @@ Ansible lint:
   tags:
     - delegated
 
-Docker gitlab:
+.Docker gitlab:
   stage: deployment test
   script:
     - molecule test -s default

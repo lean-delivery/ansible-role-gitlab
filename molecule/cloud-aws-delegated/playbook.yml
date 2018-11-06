@@ -4,12 +4,11 @@
   gather_facts: True
   roles: []
 
-- name: "Gather AWS facts"
-  ec2_metadata_facts:
-  ignore_errors: True
-
 - name: Converge
   hosts: all
+  tasks:
+    - name: "Gather AWS facts"
+      ec2_metadata_facts:
   roles:
     - role: ansible-role-gitlab
   vars:
