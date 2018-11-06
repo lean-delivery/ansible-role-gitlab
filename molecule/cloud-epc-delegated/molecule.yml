@@ -10,16 +10,16 @@ lint:
   options:
     config-file: .yamllint
 platforms:
-  # - name: test-epc-centos7-gitlab
-  #   image: CentOS7_64-bit
-  #   shape: large
-  #   region: EPAM-BY2
-  #   wait_timeout: 1800
-  #   groups:
-  #     - rhel_family
+  - name: test-epc-centos7-gitlab
+    image: CentOS7_64-bit
+    shape: medium
+    region: EPAM-BY2
+    wait_timeout: 1800
+    groups:
+      - rhel_family
   - name: test-epc-ubuntu1804-gitlab
     image: Ubuntu18.04_64-bit
-    shape: small
+    shape: medium
     region: EPAM-BY2
     wait_timeout: 1800
     groups:
@@ -39,18 +39,6 @@ provisioner:
     ANSIBLE_LIBRARY: ${ANSIBLE_LIBRARY}
 scenario:
   name: cloud-epc-delegated
-  test_sequence:
-  - lint
-  - destroy
-  - dependency
-  - syntax
-  - create
-  - prepare
-  - converge
-  - idempotence
-  - side_effect
-  - verify
-  # - destroy
 verifier:
   name: testinfra
   options:

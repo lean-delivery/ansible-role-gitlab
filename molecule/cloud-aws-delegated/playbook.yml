@@ -1,14 +1,11 @@
 ---
-- name: Force gathering facts
+- name: Gather AWS facts
   hosts: all
-  gather_facts: True
+  ec2_metadata_facts:
   roles: []
 
 - name: Converge
   hosts: all
-  tasks:
-    - name: "Gather AWS facts"
-      ec2_metadata_facts:
   roles:
     - role: ansible-role-gitlab
   vars:

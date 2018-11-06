@@ -12,14 +12,14 @@ lint:
 platforms:
   - name: test-aws-centos7-gitlab
     image: CentOS7_64-bit
-    shape: large
+    shape: medium
     region: AWS-EUCENTRAL
     wait_timeout: 1800
     groups:
       - rhel_family
   - name: test-aws-ubuntu1804-gitlab
     image: Ubuntu18.04_64-bit
-    shape: small
+    shape: medium
     region: AWS-EUCENTRAL
     wait_timeout: 1800
     groups:
