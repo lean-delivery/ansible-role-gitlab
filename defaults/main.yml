@@ -1,5 +1,5 @@
 ---
-host_fqdn: {{ ansible_fqdn }}
+host_fqdn: "{{ ansible_fqdn }}"
 gitlab_install: True
 # GitLab default user / override it on your playbook
 gitlab_admin_email: superdamin@example.com
