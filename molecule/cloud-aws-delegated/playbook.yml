@@ -1,8 +1,8 @@
 ---
 - name: Gather AWS facts
   hosts: all
-  ec2_metadata_facts:
-  roles: []
+  tasks:
+    - ec2_metadata_facts:
 
 - name: Converge
   hosts: all
