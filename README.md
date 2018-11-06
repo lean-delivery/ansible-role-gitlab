@@ -25,10 +25,12 @@ Requirements
 
 ## Role Variables
 --------------
+  - `host_fqdn` - host FQDN
+     default: `{{ ansible_fqdn }}`
   - `gitlab_install` - to install gitlab; already installed gitlab could be used for configuration
      default: `True`
   - `gitlab_external_url` - Gitlab external url
-     default: `https://{{ ansible_fqdn }}`
+     default: `https://{{ host_fqdn }}`
   - `gitlab_data_dir` - Gitlab custom directory with data
      default: `/var/opt/gitlab/git-data`
   - `gitlab_edition` - Gitlab edition. ee or ce
@@ -58,7 +60,7 @@ Requirements
   - `gitlab_ssl_create_self_signed_cert` - to create self signed cert
      default: `True`
   - `gitlab_ssl_self_signed_cert_subj` - self signed cert subj
-     default: `/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ ansible_fqdn }}`
+     default: `/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ host_fqdn }}`
 # ldap configuration for gitlab
   - `gitlab_ldap_enabled` - enable ldap usage
      default: `False`

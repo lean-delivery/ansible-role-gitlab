@@ -1,4 +1,5 @@
 ---
+host_fqdn: {{ ansible_fqdn }}
 gitlab_install: True
 # GitLab default user / override it on your playbook
 gitlab_admin_email: superdamin@example.com
@@ -8,7 +9,7 @@ gitlab_admin_password: Qwe54321
 gitlab_admin_token: BF1U1swzaouACMj2S9aQ
 
 # General config.
-gitlab_external_url: "https://{{ ansible_fqdn }}"
+gitlab_external_url: "https://{{ host_fqdn }}"
 gitlab_data_dir: "/var/opt/gitlab/git-data"
 gitlab_edition: "ce"
 gitlab_version: "latest"
@@ -19,7 +20,7 @@ gitlab_ssl_redirect_http_to_https: True
 gitlab_ssl_certificate_path: "/etc/gitlab/ssl/gitlab.crt"
 gitlab_ssl_certificate_key_path: "/etc/gitlab/ssl/gitlab.key"
 gitlab_ssl_create_self_signed_cert: True
-gitlab_ssl_self_signed_cert_subj: "/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ ansible_fqdn }}"
+gitlab_ssl_self_signed_cert_subj: "/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ host_fqdn }}"
 
 # LDAP Configuration
 gitlab_ldap_enabled: False
