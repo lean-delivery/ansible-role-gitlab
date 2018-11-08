@@ -50,7 +50,7 @@
     loop_var: platform
   when: not gitlab_file.stat.exists
 
-- name: "Create default user"
+- name: "Prepare default user script"
   template:
     src: 001_admin.rb.j2
     dest: /opt/gitlab/embedded/service/gitlab-rails/db/fixtures/production/001_admin.rb
@@ -80,6 +80,19 @@
     creates=/var/opt/gitlab/bootstrapped
   failed_when: False
   become: True
+
+- name: "Create default user if was not created automatically"
+  command: >
+    gitlab-rails runner -e production
+    /opt/gitlab/embedded/service/gitlab-rails/db/fixtures/production/001_admin.rb
+  args:
+    removes: /usr/bin/gitlab-rails
+  become: True
+  failed_when: False
+  when:
+    - not gitlab_bootstrapped.stat.exists
+    - gitlab_admin_username|trim != ""
+    - gitlab_admin_password|trim != ""
 
 - name: "Create GitLab SSL configuration folder."
   file:
