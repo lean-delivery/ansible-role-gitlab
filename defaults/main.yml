@@ -87,7 +87,7 @@ gitlab_master_create: False
 gitlab_master_name: "integrator user"
 gitlab_master_username: "integrator"
 gitlab_master_password: "Admin!23"
-gitlab_master_email: "admin@example.com"
+gitlab_master_email: "integrator@example.com"
 gitlab_master_token_name: "Created API token"
 gitlab_master_token: "Token!234"
 
