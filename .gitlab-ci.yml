@@ -34,7 +34,7 @@ AWS gitlab:
     EPC_REGION: AWS-EUCENTRAL
   stage: deployment test
   script:
-    - molecule test -s cloud-aws-delegated
+    - molecule test --destroy never -s cloud-aws-delegated
   tags:
     - delegated
 
