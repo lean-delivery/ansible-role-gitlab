@@ -1,0 +1,46 @@
+---
+- name: "List existing groups"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups"
+    method: "GET"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+  register: group_list_output
+
+- name: "Check if group is already exists"
+  set_fact:
+    group_exists: "{{ gitlab_project_group in (group_list_output.json |\
+      map(attribute='name') | list) }}"
+
+- name: "Create group"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/groups"
+    method: "POST"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    body: "name={{ gitlab_project_group }}&path={{ gitlab_project_group }}"
+    body_format: raw
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+    status_code: 201
+  register: group_output
+  when: not group_exists
+
+- name: "Set Group ID"
+  set_fact:
+    gitlab_project_group_id: "{{ group_output.json.id }}"
+  when: not group_exists
+
+- name: "Get group ID"
+  set_fact:
+    gitlab_project_group_id: "{{ item.id }}"
+  loop: "{{ group_list_output.json }}"
+  when:
+    - group_exists
+    - item.name == gitlab_project_group
+
+- name: "Group debug"
+  debug:
+    msg: "Group id is {{ gitlab_project_group_id }}"

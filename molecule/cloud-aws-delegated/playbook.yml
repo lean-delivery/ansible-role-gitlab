@@ -1,12 +1,18 @@
 ---
-- name: Force gathering facts
+- name: Gather AWS facts
   hosts: all
-  gather_facts: True
-  roles: []
+  tasks:
+    - ec2_metadata_facts:
 
 - name: Converge
   hosts: all
   roles:
     - role: ansible-role-gitlab
   vars:
+    host_fqdn: "{{ ansible_ec2_public_hostname }}"
     molecule_test: True
+    gitlab_project_group_create: True
+    gitlab_project_create: True
+    gitlab_master_user_create: True
+    gitlab_webhooks_create: True
+    gitlab_labels_create: True

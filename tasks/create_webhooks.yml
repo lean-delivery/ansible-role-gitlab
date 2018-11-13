@@ -1,0 +1,40 @@
+---
+- name: "List existing webhooks"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/projects/\
+      {{ gitlab_project_id }}/hooks"
+    method: "GET"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    validate_certs: "{{ gitlab_validate_certs }}"
+    return_content: True
+  register: webhooks_list_output
+
+- name: "Get the list of urls in hooks"
+  set_fact:
+    webhook_url_list: "{{ webhooks_list_output.json | map(attribute='url') | list }}"
+
+- name: "Add webhooks"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/projects/\
+      {{ gitlab_project_id }}/hooks"
+    method: "POST"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    body: "url={{ item.value.hook_url }}&push_events={{ item.value.push_events }}&\
+      push_events_branch_filter={{ item.value.push_events_branch_filter }}&\
+      issues_events={{ item.value.issues_events }}&\
+      confidential_issues_events={{ item.value.confidential_issues_events }}&\
+      merge_requests_events={{ item.value.merge_requests_events }}&\
+      tag_push_events={{ item.value.tag_push_events }}&\
+      note_events={{ item.value.note_events }}&\
+      job_events={{ item.value.job_events }}&\
+      pipeline_events={{ item.value.pipeline_events }}&\
+      wiki_page_events={{ item.value.wiki_page_events }}&\
+      enable_ssl_verification={{ item.value.enable_ssl_verification }}&\
+      token={{ item.value.token }}"
+    body_format: raw
+    validate_certs: "{{ gitlab_validate_certs }}"
+    status_code: 201
+  with_dict: "{{ gitlab_webhooks_list }}"
+  when: item.value.hook_url not in webhook_url_list

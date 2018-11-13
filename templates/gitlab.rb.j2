@@ -31,7 +31,11 @@ nginx['ssl_certificate'] = "{{ gitlab_ssl_certificate_path }}"
 nginx['ssl_certificate_key'] = "{{ gitlab_ssl_certificate_key_path }}"
 
 # The directory where Git repositories will be stored.
+{% if gitlab_version == "latest" or gitlab_version is version('10.3','>=') %}
 git_data_dirs({"default" => {"path" => "{{ gitlab_data_dir }}"}})
+{% else %}
+git_data_dirs({"default" => "{{ gitlab_data_dir }}"})
+{% endif %}
 
 # These settings are documented in more detail at
 gitlab_rails['ldap_enabled'] = {{ gitlab_ldap_enabled|lower }}

@@ -25,14 +25,20 @@ Requirements
 
 ## Role Variables
 --------------
+  - `host_fqdn` - host FQDN
+     default: `{{ ansible_fqdn }}`
+  - `gitlab_install` - to install gitlab; already installed gitlab could be used for configuration
+     default: `True`
   - `gitlab_external_url` - Gitlab external url
-     default: `https://{{ ansible_fqdn }}`
+     default: `https://{{ host_fqdn }}`
   - `gitlab_data_dir` - Gitlab custom directory with data
      default: `/var/opt/gitlab/git-data`
   - `gitlab_edition` - Gitlab edition. ee or ce
      default: `ce`
   - `gitlab_version` - Gitlab version
      default: `latest`
+  - `gitlab_api_version` - Gitlab api version; v4 for version 9.0 and later; if Gitlab is installed by the role this variable reset
+     default: `v4`
 # gitlab super admin user parameters. User will be created during installation.
   - `gitlab_admin_email` - admin email address
      default: `superdamin@example.com`
@@ -54,7 +60,7 @@ Requirements
   - `gitlab_ssl_create_self_signed_cert` - to create self signed cert
      default: `True`
   - `gitlab_ssl_self_signed_cert_subj` - self signed cert subj
-     default: `/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ ansible_fqdn }}`
+     default: `/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ host_fqdn }}`
 # ldap configuration for gitlab
   - `gitlab_ldap_enabled` - enable ldap usage
      default: `False`
@@ -122,6 +128,70 @@ Requirements
      default: `false`
   - `gitlab_smtp_openssl_verify_mode` -
      default: `peer`
+
+  - `gitlab_validate_certs` - to validate SSL certificate during API call
+     default: `False`
+
+# gitlab group creation/configuration
+  - `gitlab_project_group_create` - to create gitlab group; correct gitlab_admin_token should be set if gitlab not installed by this role   
+     default: `False`
+  - `gitlab_project_group` - group name   
+     default: `test_group`
+  - `gitlab_project_group_id` - group id; should be set if group creation is False   
+     default: `1`
+# gitlab project creation/configuration
+  - `gitlab_project_create` - to create gitlab project; correct gitlab_admin_token should be set if gitlab not installed by this role   
+     default: `False`
+  - `gitlab_project_name` - project name   
+     default: `test_project`
+  - `gitlab_project_id` - project id; should be set if project creation is False   
+     default: `1`
+# master user creation/configuration
+  - `gitlab_master_create` - to create gitlab project master user; correct gitlab_admin_token should be set if gitlab not installed by this role   
+     default: `False`
+  - `gitlab_master_name` - user name     
+     default: `integrator user`
+  - `gitlab_master_username` - username   
+     default: `integrator`
+  - `gitlab_master_password` - user password   
+     default: `Admin!23`
+  - `gitlab_master_email` - user email   
+     default: `admin@example.com`
+  - `gitlab_master_token_name` - name for user private api token   
+     default: `Created API token`
+  - `gitlab_master_token` - user token; will be created if name not exists; does not visible for user; reset variable after creation; ***Should be set manually for versions earlier than 9.0***      
+     default: `Token!234`
+# webhooks creation
+  - `gitlab_webhooks_create` - to create webhooks; correct gitlab_admin_token should be set if gitlab not installed by this role   
+     default: `False`
+  - `gitlab_webhooks_list` - map with webhooks parameters
+    ```
+    webhook1:
+      hook_url: "http://server.example.com:8080/project/ci_main_branch_test"
+      push_events: "true"
+      push_events_branch_filter: ""
+      issues_events: "false"
+      confidential_issues_events: "false"
+      merge_requests_events: "false"
+      tag_push_events: "false"
+      note_events: "false"
+      job_events: "false"
+      pipeline_events: "false"
+      wiki_page_events: "false"
+      enable_ssl_verification: "false"
+      token: ""
+    ```
+# labels creation
+  - `gitlab_labels_create` - to create labels; correct gitlab_admin_token should be set if gitlab not installed by this role  
+     default: `False`
+  - `gitlab_labels_list` - map with labels parameters
+     ```
+     label1:
+       name: 'Skip Deploy'
+       color: '#34495E'
+       description: ''
+     ```
+
 # nginx configuration
   - `gitlab_nginx_listen_port` -
      default: ``

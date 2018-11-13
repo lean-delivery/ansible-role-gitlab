@@ -3,7 +3,8 @@ user_args ={
   name: "{{ gitlab_admin_name }}",
   username: "{{ gitlab_admin_username }}",
   password: "{{ gitlab_admin_password }}",
-  admin: true
+  admin: true,
+  confirmed_at: DateTime.now
 }
 
 token_args = {

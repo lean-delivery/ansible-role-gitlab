@@ -1,0 +1,8 @@
+---
+- name: "Install GitLab"
+  package:
+    name: "gitlab-{{ gitlab_edition }}\
+    {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
+    state: present
+    disable_gpg_check: True
+  become: True

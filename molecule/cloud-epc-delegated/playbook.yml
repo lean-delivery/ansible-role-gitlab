@@ -1,12 +1,12 @@
 ---
-- name: Force gathering facts
-  hosts: all
-  gather_facts: True
-  roles: []
-
 - name: Converge
   hosts: all
   roles:
     - role: ansible-role-gitlab
   vars:
     molecule_test: True
+    gitlab_project_group_create: True
+    gitlab_project_create: True
+    gitlab_master_user_create: True
+    gitlab_webhooks_create: True
+    gitlab_labels_create: True
