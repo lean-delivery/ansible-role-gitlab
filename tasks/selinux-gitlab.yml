@@ -4,7 +4,6 @@
     name: "{{ item }}"
     state: present
   loop:
-    - libselinux-python
     - policycoreutils-python
   become: True
   when: ansible_selinux.status != "disabled"

@@ -11,3 +11,4 @@ requirements:
   - policycoreutils
   - policycoreutils-python
   - libselinux-utils
+  - libselinux-python

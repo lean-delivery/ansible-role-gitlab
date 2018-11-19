@@ -132,10 +132,14 @@
   args:
     removes: /usr/bin/gitlab-ctl
   become: True
-  when: (gitlab_mysql_enabled) and (gitlab_edition == "ee")
+  when:
+    - gitlab_mysql_enabled
+    - gitlab_edition == "ee"
   changed_when: False
 
 # SElinux for gitlab
 - name: "Detecting selinux"
   include: selinux-gitlab.yml
-  when: ansible_selinux.status == "enabled" and ansible_selinux.mode != "disabled"
+  when:
+    - ansible_selinux.status == "enabled"
+    - ansible_selinux.mode != "disabled"
