@@ -215,10 +215,14 @@ gitlab_labels_list:
     color: '#7F8C8D'
     description: ''
   label17:
-    name: 'Skip Webtests'
+    name: 'Skip Sonar'
     color: '#7F8C8D'
     description: ''
   label18:
+    name: 'Skip Webtests'
+    color: '#7F8C8D'
+    description: ''
+  label19:
     name: 'Skip All'
     color: '#CC0033'
     description: ''
