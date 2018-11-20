@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: "gitlab"
   author: "Lean Delivery team <team@lean-delivery.com>"
-  description: "Lean Delivery gitlab installation"
+  description: "Lean Delivery gitlab installation and/or configuration"
   company: "Epam Systems"
   license: "Apache"
   min_ansible_version: "2.5"
