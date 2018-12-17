@@ -22,7 +22,7 @@
     - pyapi-gitlab
     - python-gitlab
   register: installed_packages
-  until: installed_packages | success
+  until: installed_packages is success
   become: True
 
 - name: "Download GitLab repository installation script."

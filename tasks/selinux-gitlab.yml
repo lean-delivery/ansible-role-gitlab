@@ -6,7 +6,7 @@
   loop:
     - policycoreutils-python
   register: installed_packages
-  until: installed_packages | success
+  until: installed_packages is success
   become: True
   when: ansible_selinux.status != "disabled"
 
