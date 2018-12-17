@@ -21,8 +21,9 @@ gitlab_rails['smtp_password'] = "{{ gitlab_smtp_password }}"
 gitlab_rails['smtp_domain'] = "{{ gitlab_smtp_domain }}"
 gitlab_rails['smtp_authentication'] = "{{ gitlab_smtp_authentication }}"
 gitlab_rails['smtp_enable_starttls_auto'] = {{ gitlab_smtp_enable_starttls_auto | default(true) }}
-gitlab_rails['smtp_openssl_verify_mode'] = "{{ gitlab_smtp_openssl_verify_mode | default('peer') }}" # 'none', 'peer', 'client_once', 'fail_if_no_peer_cert'
-gitlab_rails['smtp_tls'] = "{{ gitlab_smtp_tls | default(false) }}
+# 'none', 'peer', 'client_once', 'fail_if_no_peer_cert'
+gitlab_rails['smtp_openssl_verify_mode'] = "{{ gitlab_smtp_openssl_verify_mode | default('peer') }}"
+gitlab_rails['smtp_tls'] = "{{ gitlab_smtp_tls | default(false) }}"
 {% endif %}
 
 # Whether to redirect http to https.
