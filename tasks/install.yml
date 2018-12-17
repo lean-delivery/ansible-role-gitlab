@@ -21,6 +21,8 @@
   loop:
     - pyapi-gitlab
     - python-gitlab
+  register: installed_packages
+  until: installed_packages | success
   become: True
 
 - name: "Download GitLab repository installation script."
@@ -40,8 +42,8 @@
   debug:
     msg: "gitlab-{{ gitlab_edition }}\
     {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
-  when: (gitlab_file.stat.exists == False)
-  failed_when: gitlab_version | replace(' ', '') == ""
+  when: not gitlab_file.stat.exists
+  failed_when: gitlab_version | replace(' ', '') | length == 0
 
 - include_tasks: "{{ platform }}"
   with_first_found:
@@ -60,8 +62,8 @@
   become: True
   when:
     - not gitlab_bootstrapped.stat.exists
-    - gitlab_admin_username|trim != ""
-    - gitlab_admin_password|trim != ""
+    - gitlab_admin_username|trim | length > 0
+    - gitlab_admin_password|trim | length > 0
 
 - name: "Task on CI issue"
   shell: nohup /opt/gitlab/embedded/bin/runsvdir-start </dev/null >/dev/null 2>&1 &
@@ -91,8 +93,8 @@
   failed_when: False
   when:
     - not gitlab_bootstrapped.stat.exists
-    - gitlab_admin_username|trim != ""
-    - gitlab_admin_password|trim != ""
+    - gitlab_admin_username|trim | length > 0
+    - gitlab_admin_password|trim | length > 0
 
 - name: "Create GitLab SSL configuration folder."
   file:
