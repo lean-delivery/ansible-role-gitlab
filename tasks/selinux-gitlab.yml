@@ -1,10 +1,8 @@
 ---
 - name: "Make sure that required python modules are installed"
   package:
-    name: "{{ item }}"
+    name: "policycoreutils-python"
     state: present
-  loop:
-    - policycoreutils-python
   register: installed_packages
   until: installed_packages is success
   become: True

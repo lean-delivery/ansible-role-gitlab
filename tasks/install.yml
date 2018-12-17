@@ -8,19 +8,20 @@
     loop_var: platform
 
 - name: "Check if GitLab is already installed."
-  stat: path=/usr/bin/gitlab-ctl
+  stat:
+    path: /usr/bin/gitlab-ctl
   register: gitlab_file
 
 - name: "Check if GitLab is already bootstrapped."
-  stat: path=/var/opt/gitlab/bootstrapped
+  stat:
+    path: /var/opt/gitlab/bootstrapped
   register: gitlab_bootstrapped
 
 - name: "Install pyapi-gitlab (for external management from Ansible)"
   pip:
-    name: "{{ item }}"
-  loop:
-    - pyapi-gitlab
-    - python-gitlab
+    name:
+      - pyapi-gitlab
+      - python-gitlab
   register: installed_packages
   until: installed_packages is success
   become: True
@@ -45,11 +46,7 @@
   when: not gitlab_file.stat.exists
   failed_when: gitlab_version | replace(' ', '') | length == 0
 
-- include_tasks: "{{ platform }}"
-  with_first_found:
-    - "install/{{ ansible_os_family }}.yml"
-  loop_control:
-    loop_var: platform
+- include_tasks: "install/{{ ansible_os_family }}.yml"
   when: not gitlab_file.stat.exists
 
 - name: "Prepare default user script"
@@ -71,7 +68,6 @@
     executable: "/bin/bash"
     removes: /usr/bin/gitlab-ctl
   when:
-    - not gitlab_file.stat.exists
     - molecule_test
 
 # Start and configure GitLab. Sometimes the first run fails, but after that,
@@ -107,11 +103,10 @@
   when: gitlab_ssl_create_self_signed_cert
 
 - name: "Create self-signed certificate."
-  command: >
-    openssl req -new -nodes -x509 -subj "{{ gitlab_ssl_self_signed_cert_subj }}" -days 3650
-     -keyout {{ gitlab_ssl_certificate_key_path }}
-     -out {{ gitlab_ssl_certificate_path }} -extensions v3_ca
-     creates={{ gitlab_ssl_certificate_path }}
+  openssl_certificate:
+    path: "{{ gitlab_ssl_certificate_path }}"
+    subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
+    provider: selfsigned
   become: True
   when: gitlab_ssl_create_self_signed_cert
 
