@@ -107,7 +107,6 @@
     - name: "Generate an OpenSSL Certificate Signing Request"
       openssl_csr:
         path: "{{ gitlab_ssl_certificate_csr }}"
-        privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
         subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
 
     - name: "Create self-signed certificate."
