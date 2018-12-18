@@ -104,11 +104,6 @@
   when: gitlab_ssl_create_self_signed_cert
 
 - block:
-    - name: "Generate an OpenSSL Certificate Signing Request"
-      openssl_csr:
-        path: "{{ gitlab_ssl_certificate_csr }}"
-        subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
-
     - name: "Create self-signed certificate."
       openssl_certificate:
         path: "{{ gitlab_ssl_certificate_path }}"
@@ -116,6 +111,12 @@
         privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
         csr_path: "{{ gitlab_ssl_certificate_csr }}"
         provider: selfsigned
+
+    - name: "Generate an OpenSSL Certificate Signing Request"
+      openssl_csr:
+        path: "{{ gitlab_ssl_certificate_csr }}"
+        subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
+        privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
   become: True
   when: gitlab_ssl_create_self_signed_cert
 
