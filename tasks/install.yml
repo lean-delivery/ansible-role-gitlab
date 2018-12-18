@@ -109,8 +109,13 @@
     - name: "Generate an OpenSSL Certificate Signing Request"
       openssl_csr:
         path: "{{ gitlab_ssl_certificate_csr }}"
-        subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
         privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
+        country_name: BY
+        state_or_province_name: Minsk
+        locality_name: org
+        organization_name: IT
+        organizational_unit_name: IT
+        common_name: "{{ ansible_fqdn | lower }}"
 
     - name: "Create self-signed certificate."
       openssl_certificate:
@@ -148,7 +153,7 @@
 
 # SElinux for gitlab
 - name: "Detecting selinux"
-  include: selinux-gitlab.yml
+  include_tasks: selinux-gitlab.yml
   when:
     - ansible_selinux.status == "enabled"
     - ansible_selinux.mode != "disabled"

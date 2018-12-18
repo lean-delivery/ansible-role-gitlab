@@ -13,4 +13,3 @@
         setype: ssh_home_t
         state: present
   become: True
-  when: ansible_selinux.status != "disabled"
