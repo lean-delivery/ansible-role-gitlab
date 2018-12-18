@@ -5,4 +5,6 @@
     {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
     state: present
     disable_gpg_check: True
+  register: installed_package
+  until: installed_package is success
   become: True

@@ -107,6 +107,7 @@
   openssl_certificate:
     path: "{{ gitlab_ssl_certificate_path }}"
     subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
+    privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
     provider: selfsigned
   become: True
   when: gitlab_ssl_create_self_signed_cert
