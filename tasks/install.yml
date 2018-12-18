@@ -93,17 +93,25 @@
     - gitlab_admin_username | trim | length > 0
     - gitlab_admin_password | trim | length > 0
 
-- name: "Create GitLab SSL configuration folder."
-  file:
-    path: /etc/gitlab/ssl
-    state: directory
-    owner: root
-    group: root
-    mode: 0700
-  become: True
-  when: gitlab_ssl_create_self_signed_cert
-
 - block:
+    - name: "Create GitLab SSL configuration folder."
+      file:
+        path: /etc/gitlab/ssl
+        state: directory
+        owner: root
+        group: root
+        mode: 0700
+
+    - name: "Create OpenSSL private key self-signed."
+      openssl_privatekey:
+        path: "{{ gitlab_ssl_certificate_key_path }}"
+
+    - name: "Generate an OpenSSL Certificate Signing Request"
+      openssl_csr:
+        path: "{{ gitlab_ssl_certificate_csr }}"
+        subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
+        privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
+
     - name: "Create self-signed certificate."
       openssl_certificate:
         path: "{{ gitlab_ssl_certificate_path }}"
@@ -111,12 +119,6 @@
         privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
         csr_path: "{{ gitlab_ssl_certificate_csr }}"
         provider: selfsigned
-
-    - name: "Generate an OpenSSL Certificate Signing Request"
-      openssl_csr:
-        path: "{{ gitlab_ssl_certificate_csr }}"
-        subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
-        privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
   become: True
   when: gitlab_ssl_create_self_signed_cert
 

@@ -2,6 +2,9 @@ Gitlab installation
 =========
 [![License](https://img.shields.io/badge/license-Apache-green.svg?style=flat)](https://raw.githubusercontent.com/lean-delivery/ansible-role-gitlab/master/LICENSE)
 [![Build Status](https://travis-ci.org/lean-delivery/ansible-role-gitlab.svg?branch=master)](https://travis-ci.org/lean-delivery/ansible-role-gitlab)
+[![Galaxy](https://img.shields.io/badge/galaxy-lean_delivery.gitlab-blue.svg)](https://galaxy.ansible.com/lean_delivery/gitlab)
+![Ansible](https://img.shields.io/ansible/role/d/29896.svg)
+![Ansible](https://img.shields.io/badge/dynamic/json.svg?label=min_ansible_version&url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv1%2Froles%2F29896%2F&query=$.min_ansible_version)
 ## Summary
 
 This role:
