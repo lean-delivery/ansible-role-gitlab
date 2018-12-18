@@ -1,17 +1,15 @@
 ---
-- name: "Make sure that required python modules are installed"
-  package:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - policycoreutils-python
-  become: True
-  when: ansible_selinux.status != "disabled"
+- block:
+    - name: "Make sure that required python modules are installed"
+      package:
+        name: "policycoreutils-python"
+        state: present
+      register: installed_packages
+      until: installed_packages is success
 
-- name: "Change SELinux type for directory with gitlab ssh keys"
-  sefcontext:
-    target: '/var/opt/gitlab/.ssh(/.*)?'
-    setype: ssh_home_t
-    state: present
+    - name: "Change SELinux type for directory with gitlab ssh keys"
+      sefcontext:
+        target: '/var/opt/gitlab/.ssh(/.*)?'
+        setype: ssh_home_t
+        state: present
   become: True
-  when: ansible_selinux.status != "disabled"

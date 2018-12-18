@@ -4,4 +4,6 @@
     name: "gitlab-{{ gitlab_edition }}\
     {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
     state: present
+  register: installed_package
+  until: installed_package is success
   become: True

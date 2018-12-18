@@ -8,19 +8,23 @@
     loop_var: platform
 
 - name: "Check if GitLab is already installed."
-  stat: path=/usr/bin/gitlab-ctl
+  stat:
+    path: /usr/bin/gitlab-ctl
   register: gitlab_file
 
 - name: "Check if GitLab is already bootstrapped."
-  stat: path=/var/opt/gitlab/bootstrapped
+  stat:
+    path: /var/opt/gitlab/bootstrapped
   register: gitlab_bootstrapped
 
 - name: "Install pyapi-gitlab (for external management from Ansible)"
   pip:
-    name: "{{ item }}"
-  loop:
-    - pyapi-gitlab
-    - python-gitlab
+    name:
+      - pyapi-gitlab
+      - python-gitlab
+      - pyOpenSSL
+  register: installed_packages
+  until: installed_packages is success
   become: True
 
 - name: "Download GitLab repository installation script."
@@ -40,14 +44,10 @@
   debug:
     msg: "gitlab-{{ gitlab_edition }}\
     {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
-  when: (gitlab_file.stat.exists == False)
-  failed_when: gitlab_version | replace(' ', '') == ""
+  when: not gitlab_file.stat.exists
+  failed_when: gitlab_version | replace(' ', '') | length == 0
 
-- include_tasks: "{{ platform }}"
-  with_first_found:
-    - "install/{{ ansible_os_family }}.yml"
-  loop_control:
-    loop_var: platform
+- include_tasks: "install/{{ ansible_os_family }}.yml"
   when: not gitlab_file.stat.exists
 
 - name: "Prepare default user script"
@@ -60,16 +60,16 @@
   become: True
   when:
     - not gitlab_bootstrapped.stat.exists
-    - gitlab_admin_username|trim != ""
-    - gitlab_admin_password|trim != ""
+    - gitlab_admin_username|trim | length > 0
+    - gitlab_admin_password|trim | length > 0
 
 - name: "Task on CI issue"
   shell: nohup /opt/gitlab/embedded/bin/runsvdir-start </dev/null >/dev/null 2>&1 &
   args:
     executable: "/bin/bash"
     removes: /usr/bin/gitlab-ctl
+  changed_when: False
   when:
-    - not gitlab_file.stat.exists
     - molecule_test
 
 # Start and configure GitLab. Sometimes the first run fails, but after that,
@@ -91,25 +91,40 @@
   failed_when: False
   when:
     - not gitlab_bootstrapped.stat.exists
-    - gitlab_admin_username|trim != ""
-    - gitlab_admin_password|trim != ""
+    - gitlab_admin_username | trim | length > 0
+    - gitlab_admin_password | trim | length > 0
 
-- name: "Create GitLab SSL configuration folder."
-  file:
-    path: /etc/gitlab/ssl
-    state: directory
-    owner: root
-    group: root
-    mode: 0700
-  become: True
-  when: gitlab_ssl_create_self_signed_cert
+- block:
+    - name: "Create GitLab SSL configuration folder."
+      file:
+        path: /etc/gitlab/ssl
+        state: directory
+        owner: root
+        group: root
+        mode: 0700
 
-- name: "Create self-signed certificate."
-  command: >
-    openssl req -new -nodes -x509 -subj "{{ gitlab_ssl_self_signed_cert_subj }}" -days 3650
-     -keyout {{ gitlab_ssl_certificate_key_path }}
-     -out {{ gitlab_ssl_certificate_path }} -extensions v3_ca
-     creates={{ gitlab_ssl_certificate_path }}
+    - name: "Create OpenSSL private key self-signed."
+      openssl_privatekey:
+        path: "{{ gitlab_ssl_certificate_key_path }}"
+
+    - name: "Generate an OpenSSL Certificate Signing Request"
+      openssl_csr:
+        path: "{{ gitlab_ssl_certificate_csr }}"
+        privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
+        country_name: BY
+        state_or_province_name: Minsk
+        locality_name: org
+        organization_name: IT
+        organizational_unit_name: IT
+        common_name: "{{ ansible_fqdn | lower }}"
+
+    - name: "Create self-signed certificate."
+      openssl_certificate:
+        path: "{{ gitlab_ssl_certificate_path }}"
+        subject: "{{ gitlab_ssl_self_signed_cert_subj }}"
+        privatekey_path: "{{ gitlab_ssl_certificate_key_path }}"
+        csr_path: "{{ gitlab_ssl_certificate_csr }}"
+        provider: selfsigned
   become: True
   when: gitlab_ssl_create_self_signed_cert
 
@@ -139,7 +154,7 @@
 
 # SElinux for gitlab
 - name: "Detecting selinux"
-  include: selinux-gitlab.yml
+  include_tasks: selinux-gitlab.yml
   when:
     - ansible_selinux.status == "enabled"
     - ansible_selinux.mode != "disabled"

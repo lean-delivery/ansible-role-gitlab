@@ -4,10 +4,10 @@
   with_first_found:
     - "{{ ansible_os_family }}.yml"
 
-- name: "Become section"
-  block:
-    - name: "Install requirements"
-      package:
-        name: "{{ requirements }}"
-        state: "present"
+- name: "Install requirements"
+  package:
+    name: "{{ requirements }}"
+    state: "present"
+  register: installed_packages
+  until: installed_packages is success
   become: True

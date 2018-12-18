@@ -19,6 +19,7 @@ gitlab_api_version: "v4"
 gitlab_ssl_redirect_http_to_https: True
 gitlab_ssl_certificate_path: "/etc/gitlab/ssl/gitlab.crt"
 gitlab_ssl_certificate_key_path: "/etc/gitlab/ssl/gitlab.key"
+gitlab_ssl_certificate_csr: "/etc/gitlab/ssl/gitlab.csr"
 gitlab_ssl_create_self_signed_cert: True
 gitlab_ssl_self_signed_cert_subj: "/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ host_fqdn }}"
 
