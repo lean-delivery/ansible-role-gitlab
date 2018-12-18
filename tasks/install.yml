@@ -22,6 +22,7 @@
     name:
       - pyapi-gitlab
       - python-gitlab
+      - pyOpenSSL
   register: installed_packages
   until: installed_packages is success
   become: True
@@ -89,8 +90,8 @@
   failed_when: False
   when:
     - not gitlab_bootstrapped.stat.exists
-    - gitlab_admin_username|trim | length > 0
-    - gitlab_admin_password|trim | length > 0
+    - gitlab_admin_username | trim | length > 0
+    - gitlab_admin_password | trim | length > 0
 
 - name: "Create GitLab SSL configuration folder."
   file:

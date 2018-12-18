@@ -22,14 +22,14 @@ Ansible lint:
   tags:
     - delegated
 
-Docker gitlab:
+.Docker gitlab:
   stage: deployment test
   script:
     - molecule test -s default
   tags:
     - docker
 
-AWS gitlab:
+.AWS gitlab:
   variables:
     EPC_REGION: AWS-EUCENTRAL
   stage: deployment test
@@ -38,7 +38,7 @@ AWS gitlab:
   tags:
     - delegated
 
-EPC gitlab:
+.EPC gitlab:
   variables:
     EPC_REGION: EPAM-BY2
   stage: deployment test
