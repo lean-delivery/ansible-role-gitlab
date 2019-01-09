@@ -103,6 +103,7 @@ gitlab_project_group: test_group
 gitlab_project_group_id: 1
 
 # gitlab webhooks
+gitlab_allow_local_requests: False
 gitlab_webhooks_create: False
 gitlab_webhooks_list:
   webhook1:
