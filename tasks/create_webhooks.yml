@@ -21,7 +21,7 @@
     method: "PUT"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
-    body: "allow_local_requests_from_hooks_and_services={{ gitlab_allow_local_requests }}"
+    body: "allow_local_requests_from_hooks_and_services={{ gitlab_allow_local_requests | lower }}"
     body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
     status_code: 200
