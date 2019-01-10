@@ -42,7 +42,7 @@ provisioner:
   env:
     ANSIBLE_LIBRARY: ${ANSIBLE_LIBRARY}
 scenario:
-  name: cloud-aws-direct-12.2.1.3
+  name: cloud-aws-direct
 verifier:
   name: testinfra
   options:
