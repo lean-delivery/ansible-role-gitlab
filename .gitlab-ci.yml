@@ -27,9 +27,18 @@ Docker gitlab:
   script:
     - molecule test -s default
   tags:
-    - docker
+    - aws
 
 AWS gitlab:
+  variables:
+    AWS_REGION: us-east-1
+  stage: deployment test
+  script:
+    - molecule test -s cloud-aws-direct
+  tags:
+    - aws
+
+.AWS gitlab:
   variables:
     EPC_REGION: AWS-EUCENTRAL
   stage: deployment test
@@ -38,7 +47,7 @@ AWS gitlab:
   tags:
     - delegated
 
-EPC gitlab:
+.EPC gitlab:
   variables:
     EPC_REGION: EPAM-BY2
   stage: deployment test

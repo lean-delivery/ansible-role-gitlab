@@ -14,6 +14,21 @@
   set_fact:
     webhook_url_list: "{{ webhooks_list_output.json | map(attribute='url') | list }}"
 
+- name: "Enable outbound requests"
+  uri:
+    url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/\
+      application/settings"
+    method: "PUT"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
+    body: "allow_local_requests_from_hooks_and_services={{ gitlab_allow_local_requests | lower }}"
+    body_format: raw
+    validate_certs: "{{ gitlab_validate_certs }}"
+    status_code: 200
+  when:
+    - gitlab_allow_local_requests
+    - ( gitlab_version is version('10.6', '>=') or gitlab_version == "latest" )
+
 - name: "Add webhooks"
   uri:
     url: "{{ gitlab_external_url }}/api/{{ gitlab_api_version }}/projects/\

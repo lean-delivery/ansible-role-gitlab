@@ -136,38 +136,40 @@ Requirements
      default: `False`
 
 # gitlab group creation/configuration
-  - `gitlab_project_group_create` - to create gitlab group; correct gitlab_admin_token should be set if gitlab not installed by this role   
+  - `gitlab_project_group_create` - to create gitlab group; correct gitlab_admin_token should be set if gitlab not installed by this role
      default: `False`
-  - `gitlab_project_group` - group name   
+  - `gitlab_project_group` - group name
      default: `test_group`
-  - `gitlab_project_group_id` - group id; should be set if group creation is False   
+  - `gitlab_project_group_id` - group id; should be set if group creation is False
      default: `1`
 # gitlab project creation/configuration
-  - `gitlab_project_create` - to create gitlab project; correct gitlab_admin_token should be set if gitlab not installed by this role   
+  - `gitlab_project_create` - to create gitlab project; correct gitlab_admin_token should be set if gitlab not installed by this role
      default: `False`
-  - `gitlab_project_name` - project name   
+  - `gitlab_project_name` - project name
      default: `test_project`
-  - `gitlab_project_id` - project id; should be set if project creation is False   
+  - `gitlab_project_id` - project id; should be set if project creation is False
      default: `1`
 # master user creation/configuration
-  - `gitlab_master_create` - to create gitlab project master user; correct gitlab_admin_token should be set if gitlab not installed by this role   
+  - `gitlab_master_create` - to create gitlab project master user; correct gitlab_admin_token should be set if gitlab not installed by this role
      default: `False`
-  - `gitlab_master_name` - user name     
+  - `gitlab_master_name` - user name
      default: `integrator user`
-  - `gitlab_master_username` - username   
+  - `gitlab_master_username` - username
      default: `integrator`
-  - `gitlab_master_password` - user password   
+  - `gitlab_master_password` - user password
      default: `Admin!23`
-  - `gitlab_master_email` - user email   
+  - `gitlab_master_email` - user email
      default: `admin@example.com`
-  - `gitlab_master_token_name` - name for user private api token   
+  - `gitlab_master_token_name` - name for user private api token
      default: `Created API token`
-  - `gitlab_master_token` - user token; will be created if name not exists; does not visible for user; reset variable after creation; ***Should be set manually for versions earlier than 9.0***      
+  - `gitlab_master_token` - user token; will be created if name not exists; does not visible for user; reset variable after creation; ***Should be set manually for versions earlier than 9.0***
      default: `Token!234`
 # webhooks creation
-  - `gitlab_webhooks_create` - to create webhooks; correct gitlab_admin_token should be set if gitlab not installed by this role   
+  - `gitlab_webhooks_create` - to create webhooks; correct gitlab_admin_token should be set if gitlab not installed by this role
      default: `False`
   - `gitlab_webhooks_list` - map with webhooks parameters
+  - `gitlab_allow_local_requests` - enable the option [“Allow requests to the local network from hooks and services”](https://docs.gitlab.com/ee/security/webhooks.html) in the “Outbound requests” section
+     default: `False`
     ```
     webhook1:
       hook_url: "http://server.example.com:8080/project/ci_main_branch_test"
@@ -185,7 +187,7 @@ Requirements
       token: ""
     ```
 # labels creation
-  - `gitlab_labels_create` - to create labels; correct gitlab_admin_token should be set if gitlab not installed by this role  
+  - `gitlab_labels_create` - to create labels; correct gitlab_admin_token should be set if gitlab not installed by this role
      default: `False`
   - `gitlab_labels_list` - map with labels parameters
      ```
