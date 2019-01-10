@@ -1,0 +1,19 @@
+---
+- name: Gather AWS facts
+  hosts: all
+  tasks:
+    - ec2_metadata_facts:
+
+- name: Converge
+  hosts: all
+  roles:
+    - role: ansible-role-gitlab
+  vars:
+    host_fqdn: "{{ ansible_ec2_public_hostname }}"
+    molecule_test: True
+    gitlab_project_group_create: True
+    gitlab_project_create: True
+    gitlab_master_user_create: True
+    gitlab_webhooks_create: True
+    gitlab_labels_create: True
+    gitlab_allow_local_requests: True
