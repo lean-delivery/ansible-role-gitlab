@@ -21,7 +21,7 @@
     gitlab_mysql_enabled: False
     gitlab_smtp_enabled: False
     gitlab_admin_email: BF1U1swzaouACMj2S9aQ@admin.com
-    gitlab_admin_name: BF1U1swzaouACMj2S9aQ
-    gitlab_admin_username: BF1U1swzaouACMj2S9aQ
+    gitlab_admin_name: superadmin
+    gitlab_admin_username: superadmin1
     gitlab_admin_password: BF1U1swzaouACMj2S9aQ
-    gitlab_admin_token: BF1U1swzaouACMj2S9aQ
+    gitlab_admin_token: vsff3t4ferf34wfdsfRRrrfc234
