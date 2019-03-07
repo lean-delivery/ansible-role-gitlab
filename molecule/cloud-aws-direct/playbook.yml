@@ -20,7 +20,7 @@
   roles:
     - role: ansible-role-gitlab
   vars:
-    host_fqdn: "{{ inventory_hostname }}"
+    host_fqdn: '{{ ansible_fqdn }}'
     molecule_test: True
     gitlab_project_group_create: True
     gitlab_project_create: True
