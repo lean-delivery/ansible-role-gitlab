@@ -25,7 +25,7 @@ Ansible lint:
   tags:
     - aws
 
-Docker gitlab:
+.Docker gitlab:
   stage: deployment test
   script:
     - molecule test -s default
