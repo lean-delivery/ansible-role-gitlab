@@ -1,30 +1,27 @@
 ---
 - name: Converge
   hosts: all
-  pre_tasks:
-    - name: debug inventory_hostname
-      debug:
-        var: inventory_hostname
-
-    - name: debug ansible_fqdn
-      debug:
-        var: ansible_fqdn
-
-    - name: debug ansible_hostname
-      debug:
-        var: ansible_hostname
-
-    - name: debug ansible_host
-      debug:
-        var: ansible_host
   roles:
     - role: ansible-role-gitlab
   vars:
-    host_fqdn: '{{ ansible_fqdn }}'
-    molecule_test: True
-    gitlab_project_group_create: True
-    gitlab_project_create: True
-    gitlab_master_user_create: True
-    gitlab_webhooks_create: True
-    gitlab_labels_create: True
-    gitlab_allow_local_requests: True
+  #   host_fqdn: '{{ ansible_fqdn }}'
+  #   molecule_test: True
+  #   gitlab_project_group_create: True
+  #   gitlab_project_create: True
+  #   gitlab_master_user_create: True
+  #   gitlab_webhooks_create: True
+  #   gitlab_labels_create: True
+  #   gitlab_allow_local_requests: True
+    gitlab_edition: ce
+    gitlab_version: 11.3.4
+    gitlab_ssl_redirect_http_to_https: False
+    gitlab_ldap_enabled: False
+    gitlab_config_time_zone: UTC
+    gitlab_email_enabled: False
+    gitlab_mysql_enabled: False
+    gitlab_smtp_enabled: False
+    gitlab_admin_email: BF1U1swzaouACMj2S9aQ@admin.com
+    gitlab_admin_name: BF1U1swzaouACMj2S9aQ
+    gitlab_admin_username: BF1U1swzaouACMj2S9aQ
+    gitlab_admin_password: BF1U1swzaouACMj2S9aQ
+    gitlab_admin_token: BF1U1swzaouACMj2S9aQ
