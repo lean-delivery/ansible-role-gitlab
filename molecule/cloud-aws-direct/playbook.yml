@@ -4,7 +4,6 @@
   roles:
     - role: ansible-role-gitlab
   vars:
-  #   host_fqdn: '{{ ansible_fqdn }}'
     molecule_test: True
     gitlab_project_group_create: True
     gitlab_project_create: True
@@ -13,7 +12,6 @@
     gitlab_labels_create: True
     gitlab_allow_local_requests: True
     gitlab_edition: ce
-    # gitlab_version: 11.3.4
     gitlab_ssl_redirect_http_to_https: False
     gitlab_ldap_enabled: False
     gitlab_config_time_zone: UTC
