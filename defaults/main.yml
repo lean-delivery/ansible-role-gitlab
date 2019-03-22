@@ -84,7 +84,7 @@ gitlab_smtp_openssl_verify_mode: "peer"
 
 gitlab_validate_certs: False
 # gitlab project
-gitlab_master_create: False
+gitlab_master_user_create: False
 gitlab_master_name: "integrator user"
 gitlab_master_username: "integrator"
 gitlab_master_password: "Admin!23"
