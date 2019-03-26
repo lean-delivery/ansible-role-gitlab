@@ -25,14 +25,14 @@ Ansible lint:
   tags:
     - aws
 
-Docker gitlab:
+.Docker gitlab:
   stage: deployment test
   script:
     - molecule test -s default
   tags:
     - aws
 
-AWS gitlab:
+.AWS gitlab:
   variables:
     AWS_REGION: us-east-1
   stage: deployment test
