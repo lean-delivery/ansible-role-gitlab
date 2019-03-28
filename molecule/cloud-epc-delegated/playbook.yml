@@ -12,4 +12,3 @@
     gitlab_webhooks_create: True
     gitlab_labels_create: True
     gitlab_allow_local_requests: True
-
