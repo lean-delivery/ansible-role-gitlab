@@ -50,10 +50,6 @@
 - include_tasks: "install/{{ ansible_os_family }}.yml"
   when: not gitlab_file.stat.exists
 
-- name: "Debug gitlab_admin_token 1"
-  debug:
-    msg: "{{ gitlab_admin_token }}"
-
 - name: "Prepare default user script"
   template:
     src: 001_admin.rb.j2
