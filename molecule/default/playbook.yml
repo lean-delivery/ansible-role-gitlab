@@ -11,3 +11,4 @@
     gitlab_webhooks_create: True
     gitlab_labels_create: True
     gitlab_allow_local_requests: True
+    gitlab_version: 11.6.0
