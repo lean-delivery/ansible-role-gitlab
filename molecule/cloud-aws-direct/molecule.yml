@@ -38,6 +38,21 @@ platforms:
     groups:
       - debian_family
 
+  - name: test-aws-ubuntu1804-gitlab-11.0.0
+    image: ami-012fd5eb46f56731f
+    instance_type: m5.large
+    region: us-east-1
+    vpc_subnet_id: subnet-05a2ef2b767afec50
+    assign_public_ip: False
+    spot_price: 0.04
+    security_group_name:
+      - default
+    wait_timeout: 1800
+    ssh_user: ubuntu
+    groups:
+      - debian_family
+      - gitlab_11.0.0
+
   - name: test-aws-debian9-gitlab
     image: ami-003f19e0e687de1cd
     instance_type: m5.large
@@ -52,9 +67,28 @@ platforms:
     groups:
       - debian_family
 
+  - name: test-aws-debian9-gitlab-11.0.0
+    image: ami-003f19e0e687de1cd
+    instance_type: m5.large
+    region: us-east-1
+    vpc_subnet_id: subnet-05a2ef2b767afec50
+    assign_public_ip: False
+    spot_price: 0.04
+    security_group_name:
+      - default
+    wait_timeout: 1800
+    ssh_user: admin
+    groups:
+      - debian_family
+      - gitlab_11.0.0
+
 provisioner:
   name: ansible
   log: False
+  inventory:
+    group_vars:
+      gitlab_11.0.0:
+        gitlab_version: 11.0.0
   playbooks:
     create: ../resources/provisioning/AWS/create.yml
     prepare: ../resources/provisioning/AWS/prepare.yml
