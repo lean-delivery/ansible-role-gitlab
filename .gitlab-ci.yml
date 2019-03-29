@@ -41,6 +41,15 @@ AWS gitlab:
   tags:
     - aws
 
+AWS gitlab-11.0.0:
+  variables:
+    AWS_REGION: us-east-1
+  stage: deployment test
+  script:
+    - molecule test -s cloud-aws-direct-11.0.0
+  tags:
+    - aws
+
 EPC gitlab:
   variables:
     EPC_REGION: EPAM-BY2
