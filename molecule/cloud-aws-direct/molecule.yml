@@ -23,7 +23,6 @@ platforms:
     ssh_user: centos
     groups:
       - rhel_family
-      - gitlab_latest
 
   - name: test-aws-ubuntu1804-gitlab
     image: ami-012fd5eb46f56731f
@@ -38,7 +37,6 @@ platforms:
     ssh_user: ubuntu
     groups:
       - debian_family
-      - gitlab_11.6.3
 
   - name: test-aws-debian9-gitlab
     image: ami-003f19e0e687de1cd
@@ -53,19 +51,10 @@ platforms:
     ssh_user: admin
     groups:
       - debian_family
-      - gitlab_11.0.6
 
 provisioner:
   name: ansible
   log: False
-  inventory:
-    group_vars:
-      gitlab_latest:
-        gitlab_version: "latest"
-      gitlab_11.6.3:
-        gitlab_version: 11.6.0
-      gitlab_11.0.6:
-        gitlab_version: 11.0.0
   playbooks:
     create: ../resources/provisioning/AWS/create.yml
     prepare: ../resources/provisioning/AWS/prepare.yml
