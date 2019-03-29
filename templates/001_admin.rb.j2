@@ -26,15 +26,21 @@ if user.save
   include Gitlab::Database::MigrationHelpers
   disable_ddl_transaction!
   DOWNTIME = false
-
-	if Gitlab::Database.postgresql?
-	  execute <<~SQL
-		INSERT INTO personal_access_tokens (token, name, scopes, created_at, updated_at, user_id)
-		(SELECT '{{ gitlab_admin_token }}', 'PersonalToken', '---\n- api\n', '#{Time.now}', '#{Time.now}', id from users where username = '{{ gitlab_admin_username }}')
-	  SQL
-	end
-
-	end
+    if Gitlab::Database.postgresql?
+    if "{{ gitlab_version }}" == 'latest' || "{{ gitlab_version }}"[/\d+.\d+/, 0].to_f >= 11.9
+      encrypted_token = Gitlab::CryptoHelper.sha256('{{ gitlab_admin_token }}')
+    execute <<~SQL
+    INSERT INTO personal_access_tokens (token_digest, name, scopes, created_at, updated_at, user_id)
+      (SELECT \'#{encrypted_token}\', 'PersonalToken', '---\n- api\n', '#{Time.now}', '#{Time.now}', id from users where username = '{{ gitlab_admin_username }}')
+    SQL
+    else
+      execute <<~SQL
+    INSERT INTO personal_access_tokens (token, name, scopes, created_at, updated_at, user_id)
+      (SELECT '{{ gitlab_admin_token }}', 'PersonalToken', '---\n- api\n', '#{Time.now}', '#{Time.now}', id from users where username = '{{ gitlab_admin_username }}')
+      SQL
+      end
+    end
+  end
 else
   puts "Could not create the default administrator account:".color(:red)
   puts

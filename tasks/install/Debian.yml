@@ -2,7 +2,7 @@
 - name: "Install GitLab"
   package:
     name: "gitlab-{{ gitlab_edition }}\
-    {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
+    {% if gitlab_version != 'latest' %}={{ gitlab_version }}-{{ gitlab_edition }}.0{% endif %}"
     state: present
   register: installed_package
   until: installed_package is success

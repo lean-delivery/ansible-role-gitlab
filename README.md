@@ -21,7 +21,7 @@ Requirements
 ------------
 
  - Minimal Version of the ansible for installation: 2.5
- - **Mysql 5.6 and later installed if Gitlab EE installed and parameter set** [![Build Status](https://travis-ci.org/lean-delivery/ansible-role-mysql.svg?branch=master)](https://travis-ci.org/lean-delivery/ansible-role-mtsql)
+ - **Mysql 5.6 and later installed if Gitlab EE installed and parameter set** [![Build Status](https://travis-ci.org/lean-delivery/ansible-role-mysql.svg?branch=master)](https://travis-ci.org/lean-delivery/ansible-role-mysql)
  - **Supported OS**:
    - CentOS
      - 7
