@@ -6,7 +6,7 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
   register: projects_list_output
 
 - name: "Check if project is already exists"
@@ -23,7 +23,7 @@
     body: "name={{ gitlab_project_name }}&namespace_id={{ gitlab_project_group_id }}"
     body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
     status_code: 201
   register: project_output
   when: not project_exists

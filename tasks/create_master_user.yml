@@ -6,7 +6,7 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
   register: user_list_output
 
 - name: "Check if user is already exists"
@@ -25,7 +25,7 @@
       skip_confirmation=true"
     body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
     status_code: 201
   register: user_output
   when: not user_exists
@@ -55,7 +55,7 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
   register: member_list_output
 
 - name: "Check if user is already exists in group"
@@ -73,7 +73,7 @@
     body: "user_id={{ gitlab_master_id }}&access_level=40"
     body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
     status_code: 201
   when: not member_exists
 
@@ -85,7 +85,7 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
   register: token_list_output
   when: gitlab_version is version('9.0','>=')
 
@@ -106,7 +106,7 @@
       scopes[]=api"
     body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
     status_code: 201
   register: token_output
   when:

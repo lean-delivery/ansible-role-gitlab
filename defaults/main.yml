@@ -1,6 +1,6 @@
 ---
 host_fqdn: "{{ ansible_fqdn }}"
-gitlab_install: True
+gitlab_install: true
 # GitLab default user / override it on your playbook
 gitlab_admin_email: superdamin@example.com
 gitlab_admin_name: Administrator
@@ -16,15 +16,15 @@ gitlab_version: "latest"
 gitlab_api_version: "v4"
 
 # SSL Configuration.
-gitlab_ssl_redirect_http_to_https: True
+gitlab_ssl_redirect_http_to_https: true
 gitlab_ssl_certificate_path: "/etc/gitlab/ssl/gitlab.crt"
 gitlab_ssl_certificate_key_path: "/etc/gitlab/ssl/gitlab.key"
 gitlab_ssl_certificate_csr: "/etc/gitlab/ssl/gitlab.csr"
-gitlab_ssl_create_self_signed_cert: True
+gitlab_ssl_create_self_signed_cert: true
 gitlab_ssl_self_signed_cert_subj: "/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ host_fqdn }}"
 
 # LDAP Configuration
-gitlab_ldap_enabled: False
+gitlab_ldap_enabled: false
 gitlab_ldap_host: "example.com"
 gitlab_ldap_port: "389"
 gitlab_ldap_uid: "sAMAccountName"
@@ -41,13 +41,13 @@ gitlab_config_time_zone: "UTC"
 gitlab_config_backup_keep_time: "604800"
 
 # Email configuration.
-gitlab_email_enabled: False
+gitlab_email_enabled: false
 gitlab_email_from: "gitlab@example.com"
 gitlab_email_display_name: "Gitlab"
 gitlab_email_reply_to: "gitlab@example.com"
 
 # MySQL DB info !!!(only for gitlab-ee)!!!
-gitlab_mysql_enabled: False
+gitlab_mysql_enabled: false
 gitlab_mysql_db_adapter: "mysql2"
 gitlab_mysql_db_encoding: "utf8"
 gitlab_mysql_db_host: "localhost"
@@ -69,7 +69,7 @@ gitlab_mysql_db_password: "PASSWORD"
 # If you encounter authentication errors, ensure you have allowed
 # less secure apps to access the account or try turning
 # on 2-step validation and using an application password.
-gitlab_smtp_enabled: False
+gitlab_smtp_enabled: false
 gitlab_smtp_address: "smtp.gmail.com"
 gitlab_smtp_port: "587"
 gitlab_smtp_user_name: "my.email@gmail.com"
@@ -82,9 +82,9 @@ gitlab_smtp_tls: "false"
 # see http://api.rubyonrails.org/classes/ActionMailer/Base.html
 gitlab_smtp_openssl_verify_mode: "peer"
 
-gitlab_validate_certs: False
+gitlab_validate_certs: false
 # gitlab project
-gitlab_master_user_create: False
+gitlab_master_user_create: false
 gitlab_master_name: "integrator user"
 gitlab_master_username: "integrator"
 gitlab_master_password: "Admin!23"
@@ -93,18 +93,18 @@ gitlab_master_token_name: "Created API token"
 gitlab_master_token: "Token!234"
 
 # gitlab project
-gitlab_project_create: False
+gitlab_project_create: false
 gitlab_project_name: test_project
 gitlab_project_id: 1
 
 # gitlab group
-gitlab_project_group_create: False
+gitlab_project_group_create: false
 gitlab_project_group: test_group
 gitlab_project_group_id: 1
 
 # gitlab webhooks
-gitlab_allow_local_requests: False
-gitlab_webhooks_create: False
+gitlab_allow_local_requests: false
+gitlab_webhooks_create: false
 gitlab_webhooks_list:
   webhook1:
     hook_url: "http://server.example.com:8080/project/ci_main_branch_test"
@@ -150,7 +150,7 @@ gitlab_webhooks_list:
     token: ""
 
 # gitlab labels
-gitlab_labels_create: False
+gitlab_labels_create: false
 gitlab_labels_list:
   label1:
     name: 'Skip Deploy'
@@ -234,4 +234,4 @@ gitlab_nginx: []
 #  listen_port:
 #  listen_https:
 
-molecule_test: False
+molecule_test: false

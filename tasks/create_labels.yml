@@ -7,7 +7,7 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
   register: labels_list_output
 
 - name: "Get the list of urls in labels"

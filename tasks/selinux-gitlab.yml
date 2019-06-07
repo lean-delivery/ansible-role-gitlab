@@ -12,4 +12,4 @@
         target: '/var/opt/gitlab/.ssh(/.*)?'
         setype: ssh_home_t
         state: present
-  become: True
+  become: true

@@ -4,7 +4,7 @@
     name: "gitlab-{{ gitlab_edition }}\
     {% if gitlab_version != 'latest' %}-{{ gitlab_version }}{% endif %}"
     state: present
-    disable_gpg_check: True
+    disable_gpg_check: true
   register: installed_package
   until: installed_package is success
-  become: True
+  become: true

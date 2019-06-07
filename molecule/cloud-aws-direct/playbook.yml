@@ -4,20 +4,20 @@
   roles:
     - role: ansible-role-gitlab
   vars:
-    molecule_test: True
-    gitlab_project_group_create: True
-    gitlab_project_create: True
-    gitlab_master_user_create: True
-    gitlab_webhooks_create: True
-    gitlab_labels_create: True
-    gitlab_allow_local_requests: True
+    molecule_test: true
+    gitlab_project_group_create: true
+    gitlab_project_create: true
+    gitlab_master_user_create: true
+    gitlab_webhooks_create: true
+    gitlab_labels_create: true
+    gitlab_allow_local_requests: true
     gitlab_edition: ce
-    gitlab_ssl_redirect_http_to_https: False
-    gitlab_ldap_enabled: False
+    gitlab_ssl_redirect_http_to_https: false
+    gitlab_ldap_enabled: false
     gitlab_config_time_zone: UTC
-    gitlab_email_enabled: False
-    gitlab_mysql_enabled: False
-    gitlab_smtp_enabled: False
+    gitlab_email_enabled: false
+    gitlab_mysql_enabled: false
+    gitlab_smtp_enabled: false
     gitlab_admin_email: BF1U1swzaouACMj2S9aQ@admin.com
     gitlab_admin_name: superadmin
     gitlab_admin_username: superadmin1

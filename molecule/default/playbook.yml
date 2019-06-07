@@ -4,10 +4,10 @@
   roles:
     - role: ansible-role-gitlab
   vars:
-    molecule_test: True
-    gitlab_project_group_create: True
-    gitlab_project_create: True
-    gitlab_master_user_create: True
-    gitlab_webhooks_create: True
-    gitlab_labels_create: True
-    gitlab_allow_local_requests: True
+    molecule_test: true
+    gitlab_project_group_create: true
+    gitlab_project_create: true
+    gitlab_master_user_create: true
+    gitlab_webhooks_create: true
+    gitlab_labels_create: true
+    gitlab_allow_local_requests: true

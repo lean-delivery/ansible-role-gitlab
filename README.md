@@ -33,7 +33,7 @@ Requirements
   - `host_fqdn` - host FQDN  
      default: `{{ ansible_fqdn }}`
   - `gitlab_install` - to install gitlab; already installed gitlab could be used for configuration  
-     default: `True`
+     default: `true`
   - `gitlab_external_url` - Gitlab external url  
      default: `https://{{ host_fqdn }}`
   - `gitlab_data_dir` - Gitlab custom directory with data  
@@ -57,18 +57,18 @@ Requirements
      default: `BF1U1swzaouACMj2S9aQ`
 # gitlab ssl parameters
   - `gitlab_ssl_redirect_http_to_https` - enable https redirection  
-     default: `True`
+     default: `true`
   - `gitlab_ssl_certificate_path` - path to public cert  
      default: `/etc/gitlab/ssl/gitlab.crt`
   - `gitlab_ssl_certificate_key_path` - path to private cert  
      default: `/etc/gitlab/ssl/gitlab.key`
   - `gitlab_ssl_create_self_signed_cert` - to create self signed cert
-     default: `True`
+     default: `true`
   - `gitlab_ssl_self_signed_cert_subj` - self signed cert subj  
      default: `/C=BY/ST=Minsk/L=org/O=IT/OU=IT/CN={{ host_fqdn }}`
 # ldap configuration for gitlab
   - `gitlab_ldap_enabled` - enable ldap usage  
-     default: `False`
+     default: `false`
   - `gitlab_ldap_host` - ldap server name  
      default: `example.com`
   - `gitlab_ldap_port` - ldap server port  
@@ -90,7 +90,7 @@ Requirements
      default: `604800`
 # mail configuration
   - `gitlab_email_enabled` - enable mail send configuration  
-     default: `False`
+     default: `false`
   - `gitlab_email_from` - from address  
      default: `gitlab@example.com`
   - `gitlab_email_display_name` - from display  
@@ -99,7 +99,7 @@ Requirements
      default: `gitlab@example.com`
 # mysql usage. For EE only!
   - `gitlab_mysql_enabled` - mysql usage enable  
-     default: `False`
+     default: `false`
   - `gitlab_mysql_db_adapter` - db adapter  
      default: `mysql2`
   - `gitlab_mysql_db_encoding` - db encoding  
@@ -114,7 +114,7 @@ Requirements
      default: `PASSWORD`
 # smtp settings
   - `gitlab_smtp_enabled` - to enable smtp  
-     default: `False`
+     default: `false`
   - `gitlab_smtp_address` -  
      default: `smtp.gmail.com`
   - `gitlab_smtp_port` -  
@@ -135,25 +135,25 @@ Requirements
      default: `peer`
 
   - `gitlab_validate_certs` - to validate SSL certificate during API call  
-     default: `False`
+     default: `false`
 
 # gitlab group creation/configuration
   - `gitlab_project_group_create` - to create gitlab group; correct gitlab_admin_token should be set if gitlab not installed by this role  
-     default: `False`
+     default: `false`
   - `gitlab_project_group` - group name  
      default: `test_group`
-  - `gitlab_project_group_id` - group id; should be set if group creation is False  
+  - `gitlab_project_group_id` - group id; should be set if group creation is false  
      default: `1`
 # gitlab project creation/configuration
   - `gitlab_project_create` - to create gitlab project; correct gitlab_admin_token should be set if gitlab not installed by this role  
-     default: `False`
+     default: `false`
   - `gitlab_project_name` - project name  
      default: `test_project`
-  - `gitlab_project_id` - project id; should be set if project creation is False  
+  - `gitlab_project_id` - project id; should be set if project creation is false  
      default: `1`
 # master user creation/configuration
   - `gitlab_master_user_create` - to create gitlab project master user; correct gitlab_admin_token should be set if gitlab not installed by this role  
-     default: `False`
+     default: `false`
   - `gitlab_master_name` - user name  
      default: `integrator user`
   - `gitlab_master_username` - username  
@@ -168,10 +168,10 @@ Requirements
      default: `Token!234`
 # webhooks creation
   - `gitlab_webhooks_create` - to create webhooks; correct gitlab_admin_token should be set if gitlab not installed by this role  
-     default: `False`
+     default: `false`
   - `gitlab_webhooks_list` - map with webhooks parameters  
   - `gitlab_allow_local_requests` - enable the option [“Allow requests to the local network from hooks and services”](https://docs.gitlab.com/ee/security/webhooks.html) in the “Outbound requests” section  
-     default: `False`
+     default: `false`
     ```
     webhook1:
       hook_url: "http://server.example.com:8080/project/ci_main_branch_test"
@@ -190,7 +190,7 @@ Requirements
     ```
 # labels creation
   - `gitlab_labels_create` - to create labels; correct gitlab_admin_token should be set if gitlab not installed by this role  
-     default: `False`
+     default: `false`
   - `gitlab_labels_list` - map with labels parameters  
      ```
      label1:

@@ -6,7 +6,7 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_admin_token }}"
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
   register: group_list_output
 
 - name: "Check if group is already exists"
@@ -23,7 +23,7 @@
     body: "name={{ gitlab_project_group }}&path={{ gitlab_project_group }}"
     body_format: raw
     validate_certs: "{{ gitlab_validate_certs }}"
-    return_content: True
+    return_content: true
     status_code: 201
   register: group_output
   when: not group_exists

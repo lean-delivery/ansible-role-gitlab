@@ -3,4 +3,4 @@
   command: gitlab-ctl reconfigure
   register: gitlab_restart
   failed_when: gitlab_restart_handler_failed_when
-  become: True
+  become: true
