@@ -22,7 +22,7 @@ if user.save
   puts
   puts "login:    {{ gitlab_admin_username }}".color(:green)
   puts "password: ********".color(:green)
-  class AddToken < ActiveRecord::Migration
+  class AddToken < ActiveRecord::Migration[5.0]
   include Gitlab::Database::MigrationHelpers
   disable_ddl_transaction!
   DOWNTIME = false
