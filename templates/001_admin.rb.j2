@@ -7,22 +7,19 @@ user_args ={
   confirmed_at: DateTime.now
 }
 
-token_args = {
-  personal_access_token: "{{ gitlab_admin_token }}",
-  scopes: ["api"],
-  name: "API token"
-}
-
 user = User.new(user_args)
 user.skip_confirmation!
-
 
 if user.save
   puts "Administrator account created:".color(:green)
   puts
   puts "login:    {{ gitlab_admin_username }}".color(:green)
   puts "password: ********".color(:green)
+{% if (gitlab_version is version('11.9.0', '>=')) or gitlab_version == 'latest' %}
   class AddToken < ActiveRecord::Migration[5.0]
+{% else %}
+  class AddToken < ActiveRecord::Migration
+{% endif %}  
   include Gitlab::Database::MigrationHelpers
   disable_ddl_transaction!
   DOWNTIME = false
