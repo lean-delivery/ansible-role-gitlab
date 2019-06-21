@@ -220,6 +220,18 @@ Example Playbook
     - role: lean_delivery.gitlab
 ```
 
+Note. For local test in docker 
+----------------
+Insert this task in ansible-role-gitlab\tasks\install.yml before "Reconfigure GitLab (first run)."
+```yml
+- name: "Task on CI issue"
+  shell: nohup /opt/gitlab/embedded/bin/runsvdir-start </dev/null >/dev/null 2>&1 &
+  args:
+    executable: "/bin/bash"
+    removes: /usr/bin/gitlab-ctl
+  changed_when: false
+```
+
 License
 -------
 
