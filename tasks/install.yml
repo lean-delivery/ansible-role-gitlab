@@ -63,15 +63,6 @@
     - gitlab_admin_username|trim | length > 0
     - gitlab_admin_password|trim | length > 0
 
-- name: "Task on CI issue"
-  shell: nohup /opt/gitlab/embedded/bin/runsvdir-start </dev/null >/dev/null 2>&1 &
-  args:
-    executable: "/bin/bash"
-    removes: /usr/bin/gitlab-ctl
-  changed_when: false
-  when:
-    - molecule_test
-
 # Start and configure GitLab. Sometimes the first run fails, but after that,
 # restarts fix problems, so ignore failures on this run.
 - name: "Reconfigure GitLab (first run)."

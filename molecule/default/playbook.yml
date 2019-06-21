@@ -4,7 +4,6 @@
   roles:
     - role: ansible-role-gitlab
   vars:
-    molecule_test: true
     gitlab_project_group_create: true
     gitlab_project_create: true
     gitlab_master_user_create: true

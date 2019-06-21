@@ -233,5 +233,3 @@ gitlab_labels_list:
 gitlab_nginx: []
 #  listen_port:
 #  listen_https:
-
-molecule_test: false

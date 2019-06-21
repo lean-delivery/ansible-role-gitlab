@@ -5,7 +5,6 @@
     - role: ansible-role-gitlab
   vars:
     host_fqdn: "{{ ansible_host }}"
-    molecule_test: true
     gitlab_project_group_create: true
     gitlab_project_create: true
     gitlab_master_user_create: true
